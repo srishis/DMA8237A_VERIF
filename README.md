@@ -1,5 +1,5 @@
 Project Summary:
-System Verilog based RTL Design of DMA controller for 8086 microprocessor based systems.
+System Verilog based RTL Design and Verification of DMA controller for 8086 microprocessor based systems.
 
 Files description:
 
