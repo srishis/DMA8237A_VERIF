@@ -1,20 +1,23 @@
 
 module top;
-
+	
+timeunit 1ns;
+timeprecision 1ns;
+	
 bit CLK, RESET;
 	
 dma_if dif(CLK, RESET);
 	
 Dma8237aTop DMT (dif);
 
-// CLock
+// 5 Mhz clock ie 200 ns time period
 initial begin
-forever #10  CLK = ~CLK; 
+forever #100  CLK = ~CLK; 
 end
 
-// Reset
+// Apply and life reset
 initial begin
-	repeat(50)@(negedge CLK); RESET = 1;
+	repeat(10)@(negedge CLK); RESET = 1;
 	repeat(100)@(negedge CLK); RESET = 0;
 end
 
