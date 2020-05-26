@@ -1,5 +1,7 @@
+typedef enum {STIMULUS,REG_WRITE,REG_READ} pkt_type_t;
+
 class dma_transaction;
-  
+   pkt_type_t pkt_type;
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit ior;
   rand bit iow;
