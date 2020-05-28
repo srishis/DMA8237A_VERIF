@@ -7,6 +7,7 @@
 `include "dma_driver.sv"
 `include "dma_monitor.sv"
 `include "dma_coverage.sv"
+`include "dma_scoreboard.sv"
 `include "dma_env.sv"
 `include "dma_test.sv"
 // `include "dma_assertions.sv"
