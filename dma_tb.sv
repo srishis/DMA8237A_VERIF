@@ -7,7 +7,7 @@ bit CLK, RESET;
 	
 dma_if.TB dif(CLK, RESET);
 	
-Dma8237aTop DMT (dif);
+dma_top DMA_TOP (dif);
 
 // 5 Mhz clock ie 200 ns time period
 initial begin
