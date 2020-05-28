@@ -1,9 +1,10 @@
-// DMA Timing Contol Module 
+// DMA Timing Control Module 
 
+module dma_control(dma_if.TC dif, DmaControlIf.TC cif,  DmaRegIf.TC rif);
 
-module DmaTimingControl(dma_if.TC dif, DmaControlIf.TC cif,  DmaRegIf.TC rif);
-	
-// FSM control outputs
+import dma_reg_pkg::*;
+
+// FSM control signals
 logic eop;		
 logic aen;		
 logic adstb;		
@@ -175,4 +176,4 @@ always_comb begin
     endcase
 end
 				 
-endmodule
+endmodule : dma_control
