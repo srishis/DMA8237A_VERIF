@@ -84,6 +84,13 @@ logic [15:0] TEMP_ADDR_REG;
 // Temporary Address Register
 logic [15:0] TEMP_WORD_COUNT_REG;
 
+// Datapath Buffers
+logic [3:0] ioAddrBuf;      
+logic [3:0] outAddrBuf;      
+logic [7:0] ioDataBuf;  	
+logic [7:0] readBuf;
+logic [7:0] writeBuf;
+
 task regs_init();	
 	CMD_REG					= '0;
 	REQ_REG					= '0;
