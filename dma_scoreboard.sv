@@ -1,4 +1,4 @@
-class dma_sb;
+class dma_scoreboard;
   
   //used to count the number of transactions
   int num_trans;
