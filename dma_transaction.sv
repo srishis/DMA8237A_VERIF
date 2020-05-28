@@ -7,6 +7,8 @@ class dma_transaction;
 import dma_reg_pkg::*;
 
    pkt_type_t pkt_type;
+   
+  // Properties
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit ior;
   rand bit iow;
@@ -26,6 +28,7 @@ import dma_reg_pkg::*;
   bit aen;
   bit adstb;
   
+  // Methods
   // deep copy method
   function void copy(output dma_transaction tx);
     tx = new;
@@ -132,6 +135,27 @@ task regs_write(bit[3:0] address, bit [15:0] data);
 	dma_cfg::gen2drv.put(tx);
 endtask : regs_write
 
+// Constraints
+
+// Register Constraints
+constraint mode_reg_c {
+	foreach(MODE_REG[i])  MODE_REG.mode_sel == 1;			// Only single  transfer mode supported
+	foreach(MODE_REG[i])  MODE_REG.trans_type inside {1,2}; // Only read/write transfers supported
+}
+
+constraint cmd_reg_c {
+	CMD_REG.mem2mem_en == 0;		// memory to memory transfers not supported
+	CMD_REG.ch0_addr_hold == 0;		// Channel 0 address hold disabled
+	CMD_REG.timing_type == 0; 		// Only normal timing_type supported
+	CMD_REG.priority_type == 1; 	// Rotating priority_type supported
+}
+
+constraint request_reg_c {
+	REQ_REG.reserved == 0;
+}
+
+constraint mask_reg_c {
+	MASK_REG.reserved == 0;
+}
+
 endclass : dma_transaction
-
-
