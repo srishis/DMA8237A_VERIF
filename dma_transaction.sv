@@ -1,6 +1,11 @@
+// DMA Transaction class
+
 typedef enum {STIMULUS,REG_WRITE,REG_READ} pkt_type_t;
 
 class dma_transaction;
+
+import dma_reg_pkg::*;
+
    pkt_type_t pkt_type;
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit ior;
@@ -76,5 +81,57 @@ class dma_transaction;
 	$display("\t ADSTB = %b", tx.adstb);
 	$display("---------------------------------------------------");
   endfunction
-	
-endclass
+
+// Initialize the registers	
+task regs_init();	
+	CMD_REG					= '0;
+	REQ_REG					= '0;
+	MASK_REG				= '0;
+	STATUS_REG				= '0;
+	TEMP_DATA_REG			= '0;
+	foreach(MODE_REG[i])				MODE_REG[i] 			= '0;
+	foreach(TEMP_ADDR_REG[i])			TEMP_ADDR_REG[i]		= '0;
+	foreach(TEMP_WORD_COUNT_REG[i]) 	TEMP_WORD_COUNT_REG[i]  = '0;
+	foreach(BASE_ADDR_REG[i])			BASE_ADDR_REG[i]		= '0;
+	foreach(BASE_WORD_COUNT_REG[i]) 	BASE_WORD_COUNT_REG		= '0;
+	foreach(CURR_ADDR_REG[i])			CURR_ADDR_REG 			= '0;
+	foreach(CURR_WORD_COUNT_REG[i])		CURR_WORD_COUNT_REG		= '0;
+endtask : regs_init
+
+// TODO : confirm prototype
+// Read Register
+task regs_read(bit[3:0] address, bit [15:0] data);
+	tx = new();
+	tx.pkt_type = REG_READ;
+	tx.cs = 1'b0;
+	tx.ior = 1'b0;
+	tx.iow = 1'b1;
+	tx.addr_lo = address;
+	tx.dreq = 4'b0;
+	tx.hlda = 1'b0;
+	tx.eop = 1'b1;
+	dma_cfg::gen2drv.put(tx);
+	//wait for a clock in driver for data
+	dma_cfg::drv2gen.get(rx);
+	data = rx.data;
+endtask : regs_read
+
+// TODO : confirm prototype
+// Write Register 
+task regs_write(bit[3:0] address, bit [15:0] data);
+	tx = new();
+	tx.cs = 1'b0; 
+	tx.ior = 1'b1;
+	tx.iow = 1'b0;
+	tx.addr_lo = address;
+	tx.data = data;
+	tx.dreq = 4'b0;
+	tx.hlda = 1'b0; 
+	tx.eop = 1'b1;
+	tx.pkt_type = REG_WRITE;
+	dma_cfg::gen2drv.put(tx);
+endtask : regs_write
+
+endclass : dma_transaction
+
+
