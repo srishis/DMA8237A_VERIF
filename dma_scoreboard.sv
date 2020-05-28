@@ -16,4 +16,4 @@ class dma_scoreboard;
  
   endtask : run
   
-endclass : dma_sb
+endclass : dma_scoreboard
