@@ -1,4 +1,3 @@
-
 module top;
 	
 timeunit 1ns;
@@ -6,7 +5,7 @@ timeprecision 1ns;
 	
 bit CLK, RESET;
 	
-dma_if dif(CLK, RESET);
+dma_if.TB dif(CLK, RESET);
 	
 Dma8237aTop DMT (dif);
 
