@@ -1,40 +1,31 @@
 // Interface for DMA Registers 
 
-interface DmaRegIf(input logic CLK, RESET);
+interface dma_reg_if(input logic CLK, RESET);
 
-// DMA Registers
- logic [5:0]  modeReg[4];
- logic [7:0]  commandReg;
- logic [7:0]  requestReg;
- logic [7:0]  maskReg;
- logic [7:0]  statusReg;
+import dma_reg_pkg::*;
 
-
+// Datapath modport
 modport DP(
  input  CLK,
- input  RESET,	
- output modeReg,
- output commandReg,
- output requestReg,
- output maskReg,
- output statusReg
-
+ input  RESET
 );
 
+ // Control logic modport
 modport TC(
  input  CLK,
  input  RESET,
- input modeReg,
- input commandReg,
- input statusReg
+ input  MODE_REG,
+ input  CMD_REG,
+ input  STATUS_REG
 );
 
+// Priority logic modport
 modport PR(
  input  CLK,
  input  RESET,
- input commandReg,
- input requestReg,
- input maskReg
+ input  CMD_REG,
+ input  REQ_REG,
+ input  MASK_REG
 );
 
-endinterface
+endinterface : dma_reg_if
