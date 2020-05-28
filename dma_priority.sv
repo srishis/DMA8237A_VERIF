@@ -1,7 +1,7 @@
 // DMA Priority Module 
 
 
-module DmaPriority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif); 
+module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif); 
 	
 	logic validDREQ; 
 	logic [3:0] pencoderOut, dack;
@@ -251,4 +251,4 @@ module DmaPriority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 			end
 	end
 
-endmodule
+endmodule : dma_priority
