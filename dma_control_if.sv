@@ -1,6 +1,6 @@
 //  DMA Timing and Control module interface 
 
-interface DmaControlIf(input logic CLK, RESET);    
+interface dma_control_if(input logic CLK, RESET);    
 
 logic hrq;
 logic ldCurrAddrTemp; 
@@ -59,4 +59,4 @@ modport PR(
 	    output VALID_DREQ3
 );
 
-endinterface
+endinterface : dma_control_if
