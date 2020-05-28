@@ -1,4 +1,3 @@
-
 interface dma_if(input logic CLK, input logic RESET);
 
 	/* interface to 8086 processor */
