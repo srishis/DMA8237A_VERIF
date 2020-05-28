@@ -1,6 +1,6 @@
 // DMA Registers and Buffers module
 
-module dma_reg_file(dma_if.DP dif, DmaControlIf.DP cif, DmaRegIf.DP rif);
+module dma_reg_file(dma_if.DP dif, dma_control_if.DP cif,  dma_reg_if.DP rif);
 
 import dma_reg_pkg::*;
 
@@ -15,7 +15,7 @@ logic [7:0]  tempWordReg;
 
 logic TC[4];	
 
-// Datapath Buffers
+// DMA Buffers
 logic [3:0] ioAddrBuf;      
 logic [3:0] outAddrBuf;      
 logic [7:0] ioDataBuf;  	
