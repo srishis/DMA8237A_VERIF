@@ -88,6 +88,31 @@ interface dma_if(input logic CLK, input logic RESET);
 	/* Modport for Test Bench */
 	modport TB(clocking cb);
 	
+	// Modport for driver
+	modport DRIVER(clocking cb);
+	
+	// Modport for monitor
+	modport MON(
+			input  CLK,
+			input  RESET,
+			input  IOR_N,
+			input  IOW_N,
+			input  DB,
+			input  ADDR_L,
+
+			input  EOP_N,
+
+			input  DREQ,
+			input  HLDA,
+			input  CS_N,
+
+			input ADDR_U,
+			input DACK,
+			input HRQ,
+			input AEN,
+			input ADSTB
+	);
+	
 	/* Clocking Block to drive stimulus at cycle level */
 	clocking cb @(posedge CLK);
 			
@@ -111,4 +136,4 @@ interface dma_if(input logic CLK, input logic RESET);
 			
 	endclocking
 
-endinterface
+endinterface : dma_if
