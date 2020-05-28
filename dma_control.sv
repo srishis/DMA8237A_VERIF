@@ -1,6 +1,6 @@
 // DMA Timing Control Module 
-
-module dma_control(dma_if.TC dif, DmaControlIf.TC cif,  DmaRegIf.TC rif);
+// TODO: register updates
+module dma_control(dma_if.TC dif, dma_control_if.TC cif,  dma_reg_if.TC rif);
 
 import dma_reg_pkg::*;
 
