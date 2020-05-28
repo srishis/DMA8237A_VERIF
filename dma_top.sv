@@ -1,19 +1,19 @@
 // DMA Top module
 
-module Dma8237aTop(dma_if.DUT dif);
+module dma_top(dma_if.DUT dif);
 
 // DMA interface instantiation
-DmaControlIf cif(dif.CLK, dif.RESET);
-DmaRegIf rif(dif.CLK, dif.RESET);
+dma_control_if cif(dif.CLK, dif.RESET);
+dma_reg_if rif(dif.CLK, dif.RESET);
 
-// DMA modules instantiation
+// DMA internal module instantiation
 // Datapath module
-DmaDatapath D1(dif, cif, rif);
+dma_datapath DMA_DATAPATH(dif, cif, rif);
 		
 // Timing and Control module
-DmaTimingControl C1(dif, cif, rif);
+dma_control DMA_CONTROL(dif, cif, rif);
 
 // Priority logic
-DmaPriority P1(dif, cif, rif);
+dma_priority DMA_PRIORITY(dif, cif, rif);
 
-endmodule
+endmodule : dma_top
