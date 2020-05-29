@@ -33,8 +33,8 @@ class dma_env;
 	task report_results();
 		// errors should be zero for test pass
 		//also check for Number of transactions generated and processed match
-		if((dma_cfg::error_count != 0) && (gen.num_trans != sb.num_trans)) 	
-			$display("Test failed with errors = %d", dma_cfg::error_count);
+		if((dma_config::error_count != 0) && (gen.num_trans != sb.num_trans)) 	
+			$display("Test failed with errors = %d", dma_config::error_count);
 		else
 			$display("TEST PASS: dma Works as expected!!!");
 	endtask : report_results
