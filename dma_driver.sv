@@ -8,14 +8,9 @@ class dma_driver;
 	tx_type_t tx_type;
 	virtual dma_if.DRIVER vif;
 	
-	// int num_trans = 0;
-	
-	// function new();
-		// this.vif = dma_cfg::vif;	// pass interface from top to each class which needs it as virtual interface handle
-	 // endfunction
-	
 	task run();
 		$display("DMA_DRIVER:: Entered in DRIVER run method!");
+		// get the virtual interface handle
 		vif = dma_config::vif;
 		//wait for DUT to come out of reset
 		@(negedge vif.cb.RESET);
@@ -27,6 +22,8 @@ class dma_driver;
 		dma_config::gen2drv.get(tx);
 		// drive transactions to DUT
 		drive_stimulus(tx);
+		// TODO: add flag to indicate stimulus is driven to design
+		dma_config::driver_done = 1;
 		if(VERBOSE) tx.print;
 		dma_config::num_trans++;
 	end
