@@ -226,7 +226,7 @@ interface dma_if(input logic CLK, input logic RESET);
 	modport TB(clocking cb);
 	
 	// Modport for driver
-	modport DRIVER(clocking cb);
+	modport DRIVER(clocking dma_cb, RESET);
 	
 	// Modport for monitor
 	modport MON(
@@ -253,7 +253,7 @@ interface dma_if(input logic CLK, input logic RESET);
 	/* Clocking Block to drive stimulus at cycle level */
 	clocking cb @(posedge CLK);
 			
-			default input #0 output #0;
+			default input #0 output #1;
 			
 			inout  	IOR_N;
 			inout  	IOW_N;
@@ -275,12 +275,11 @@ interface dma_if(input logic CLK, input logic RESET);
 	
 	// Reset method
 	task apply_reset;
-		repeat(CYCLES)@(posedge CLK);
+		repeat(5)@(posedge CLK);
 		RESET = 1;
-		repeat(CYCLES)@(posedge CLK);	
+		repeat(10)@(posedge CLK);	
 		RESET = 0;
 	endtask : apply_reset
 	
 endinterface : dma_if
 
-endinterface : dma_if
