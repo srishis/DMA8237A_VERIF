@@ -63,8 +63,8 @@ class dma_coverage;
 		DATA_CP:coverpoint tx.cs{
 					option.at_least = 5;
 					}
-		ADDRESS_LOW_CP:
-		ADDRESS_HIGH_CP:
+		//ADDRESS_LOW_CP:
+		//	ADDRESS_HIGH_CP:
 	endgroup
 	
 	function new();
@@ -73,7 +73,7 @@ class dma_coverage;
 
 	task run();
 		forever begin
-		dma_cfg::mon2cov.get(tx);		// get the transaction from monitor class
+		dma_config::mon2cov.get(tx);		// get the transaction from monitor class
 		dma_cg.sample();			// use coverage in built sample() method to sample the transaction for coverage
 		end
 	endtask
