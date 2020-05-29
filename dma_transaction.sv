@@ -1,12 +1,12 @@
 // DMA Transaction class
 
-typedef enum {STIMULUS,REG_WRITE,REG_READ} pkt_type_t;
+typedef enum {STIMULUS,BASE_ADDR_CFG,BASE_COUNT_CFG,REG_WRITE_CFG,REG_READ_CFG} pkt_type_t;
 
 class dma_transaction;
 
 import dma_reg_pkg::*;
 
-   pkt_type_t pkt_type;
+   pkt_type_t tx_type;
    
   // Properties
   // declare all inputs and controls signals as rand to generate random values from them
