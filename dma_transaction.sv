@@ -36,7 +36,7 @@ import dma_reg_pkg::*;
     tx.iow = this.iow;
     tx.data = this.data;
     tx.addr_lo = this.addr_lo;
-    tx.eop = this.eop;
+    tx.eop = this.eop
     tx.dreq = this.dreq;
     tx.hlda = this.hlda;
     tx.cs = this.cs;
@@ -47,7 +47,7 @@ import dma_reg_pkg::*;
     tx.adstb = this.adstb;
   endfunction
   
-  function int compare(input dma_transaction tx);
+  function void compare(input dma_transaction tx);
     if(
       tx.ior != this.ior ||
       tx.iow != this.iow ||
@@ -100,7 +100,7 @@ task regs_init();
 	foreach(CURR_ADDR_REG[i])			CURR_ADDR_REG 			= '0;
 	foreach(CURR_WORD_COUNT_REG[i])		CURR_WORD_COUNT_REG		= '0;
 endtask : regs_init
-/*
+
 // TODO : confirm prototype
 // Read Register
 task regs_read(bit[3:0] address, bit [15:0] data);
@@ -157,5 +157,5 @@ constraint request_reg_c {
 constraint mask_reg_c {
 	MASK_REG.reserved == 0;
 }
-*/
+
 endclass : dma_transaction
