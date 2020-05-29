@@ -4,6 +4,17 @@ package dma_reg_pkg;
 
 
 // TODO: Register Address Map
+`define BASE_REG_CH0_ADDR   4'h0000
+`define BASE_REG_CH1_ADDR   4'h0010
+`define BASE_REG_CH2_ADDR   4'h0100
+`define BASE_REG_CH3_ADDR   4'h0110
+
+`define BASE_REG_CH0_COUNT   4'h0001
+`define BASE_REG_CH1_COUNT   4'h0011
+`define BASE_REG_CH2_COUNT   4'h0101
+`define BASE_REG_CH3_COUNT   4'h0111
+
+
 `define CMD_REG_ADDR 		4'h1000
 `define MODE_REG_ADDR 		4'h1011
 `define REQUEST_REG_ADDR 	4'h1001
