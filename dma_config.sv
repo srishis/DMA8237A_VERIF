@@ -13,6 +13,7 @@ class dma_config;
   static virtual dma_if vif;
   
   static int error_count;
+  static string testcase;
   
   // Number of transactions
   static int num_trans;

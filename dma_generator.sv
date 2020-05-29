@@ -13,9 +13,11 @@ class dma_generator;
 	test_1: basic_read_write_sanity_test;
 	endsequence
 	*/
-	unique case();
-	"Regression":begin basic_read_write_sanity_test; end
-	"basic_read_write_sanity_test":basic_read_write_sanity_test;
+	unique case(dma_config::testcase);
+	"Regression":begin basic_read_write_sanity_test; io_rd_test; io_wr_test; end
+	"basic_read_write_sanity_test": basic_read_write_sanity_test;
+	"io_rd_test": io_rd_test;
+	"io_wr_test": io_wr_test;
 	"random_rd_wr_test":
 	"dma_request_priority_test":
 	"dma_io_to_mem_read_transfer":
@@ -70,6 +72,9 @@ class dma_generator;
 								 $display("ERROR:DMA GENERATOR::RANDOMIZATION FAILED FOR BASIC READ WRITE SANITY TEST: WRITE ");
 		// mailbox for inter communication between classes
 		tx.tx_type = REG_WRITE_CFG;
+		if(i == 15) tx.ctrl_regs_wr_done = 1;
+		else tx.ctrl_regs_wr_done = 0;
+		
 		dma_config::gen2drv.put(tx);// send transaction to Driver to drive it to the DUT using mailbox put() method
 		txQ.push_front(tx);
 		reg_test++;
@@ -105,30 +110,48 @@ class dma_generator;
 		endtask
 		
 	//random_rd_test 
-		task random_rd_test; //channel 0
-		
-		//current address reg
-		reg_write(`BASE_REG_CH0_ADDR,8'h01100000,);
-		//current base reg
-		//command register (ack=low, dreq=low, write=X, priority=fixed, timing=normal, c_enable=0, channel 0 hold=0, mem to mem=disable)
-		reg_write(`CMD_RED_ADDR,15'h01100000);
-		//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
-		reg_write(`MODE_RED_ADDR,15'h0101100);
-		//request res()
-		
+		task io_rd_test; //channel 0
+			tx.ctrl_regs_wr_done = 1'b0;
+			tx.dreq = 4'h1;
+			dma_config::gen2drv.put(tx);
+			//current address reg
+			reg_write(`BASE_REG_CH0_ADDR,16'h00ab);
+			//current base reg
+			reg_write(`BASE_REG_CH0_COUNT,16'h000a);
+			//command register (ack=low, dreq=low, write=X, priority=fixed, timing=normal, c_enable=0, channel 0 hold=0, mem to mem=disable)
+			reg_write(`CMD_RED_ADDR,16'h0060);
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			reg_write(`MODE_RED_ADDR,16'h0058);
+			//request res(set/reset(1/0) =set,channel= 0)
+			reg_write(`REQUEST_REG_ADDR,16'h0004);
+			//mask register 
+			tx.ctrl_regs_wr_done = 1'b1;
+			reg_write(`MASK_REG_ADDR,16'h0004);
 		endtask
+	
 	//random_wr_test (ack=low, dreq=low, write=X, priority=fixed, timing=normal, c_enable=0, channel 0 hold=0, mem to mem=disable)
-		task random_wr_test;
-		reg_write
-		
-		
-		
-		
+		task io_wr_test; //channel 0
+			tx.ctrl_regs_wr_done = 1'b0;
+			tx.dreq = 4'h1;
+			dma_config::gen2drv.put(tx);
+			//current address reg
+			reg_write(`BASE_REG_CH0_ADDR,16'h00ac);
+			//current base reg
+			reg_write(`BASE_REG_CH0_COUNT,16'h000b);
+			//command register (ack=low, dreq=low, write=X, priority=fixed, timing=normal, c_enable=0, channel 0 hold=0, mem to mem=disable)
+			reg_write(`CMD_RED_ADDR,16'h0040);
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			reg_write(`MODE_RED_ADDR,16'h0054);
+			//request res(set/reset(1/0) =set,channel= 0)
+			reg_write(`REQUEST_REG_ADDR,16'h0004);
+			//mask register 
+			tx.ctrl_regs_wr_done = 1'b1;
+			reg_write(`MASK_REG_ADDR,16'h0004);	
 		endtask
 	
 	//random_rd_wr_test
 		task random_rd_wr_test;
-		reg_write
+		
 		
 		
 		
@@ -185,18 +208,13 @@ class dma_generator;
 	tx.hlda = 1'b0;
 	tx.eop = 1'b1;
 	
-	if(address == 4'h0000 || address == 4'h0010 || address == 4'h0100 || address == 4'h0110) begin
+	if(address == 4'h0000 || address == 4'h0010 || address == 4'h0100 || address == 4'h0110 
+	|| address == 4'h0001 || address == 4'h0011 || address == 4'h0101 || address == 4'h0111) begin
 		tx.data = data[7:0];
 		dma_config::gen2drv.put(tx);
 		tx.data = data[15:8];
 		dma_config::gen2drv.put(tx);
-	end	
-	else if(address == 4'h0001 || address == 4'h0011 || address == 4'h0101 || address == 4'h0111)begin 
-		tx.data = data[7:0];
-		dma_config::gen2drv.put(tx);
-		tx.data = data[15:8];
-		dma_config::gen2drv.put(tx);
-	end	
+	end	 
 	else begin
 	tx.data = data;
 	dma_config::gen2drv.put(tx);
