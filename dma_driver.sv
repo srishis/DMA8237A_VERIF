@@ -30,17 +30,12 @@ class dma_driver;
 	endtask
 	
 	// task to drive transactions to DUT
+	// drive transactions at clock edge using clocking block
+	// convert object level information(tx) to signal level(vif) to drive it to the DUT
 	task drive_dut(dma_transaction tx);
 		if(tx.tx_type == REG_WRITE_CFG)			drive_control_regs_cfg(tx);
 		else if(tx.tx_type == BASE_REG_CFG)		drive_base_regs_cfg(tx);
-		else if(tx.tx_type == REG_READ_CFG)		drive_read_cfg(tx);
-		//else if(tx.tx_type == BASE_COUNT_CFG) drive_base_count_cfg(tx);
-		//else if(tx.tx_type == DMA_WRITE)		drive_dma_write_tx(tx);
-		//else if(tx.tx_type == DMA_READ) 		drive_dma_read_tx(tx);
-		//else									drive_dma_stimulus(tx);
-		// drive transactions at clock edge using clocking block
-		@(vif.cb);
-		// convert object level information(tx) to signal level(vif) to drive it to the DUT
+		else if(tx.tx_type == REG_READ_CFG)		drive_read_cfg(tx);		
 	endtask
 	
 	// task to configure all control registers
@@ -82,7 +77,7 @@ class dma_driver;
 	//TODO: task registers read status
 	
 	// task to drive DMA stimulus
-	task drive_dma_stimulus(dma_transaction tx);
+	task drive_stimulus(dma_transaction tx);
 		// enable DMA controller by asserting Chip select
 		vif.dma_cb.CS_N 	<= 0;
 		repeat(10)@(vif.cb);
@@ -172,7 +167,7 @@ class dma_driver;
 		end 	// end of HRQ check
 		
 			
-	endtask : drive_dma_stimulus
+	endtask : drive_stimuluss
 	
 	
 endclass : dma_driver
