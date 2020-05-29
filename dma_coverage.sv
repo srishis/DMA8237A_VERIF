@@ -3,10 +3,6 @@ class dma_coverage;
 	// transaction class handle (not object!) to use in this class
 	dma_transaction tx;
 	
-	function new();
-		dma_cg  = new();
-	endfunction
-	
 	// covergroup for Dma 
 	covergroup dma_cg;
 		CS_CP: coverpoint tx.cs{
@@ -52,12 +48,13 @@ class dma_coverage;
 					option.at_least = 10;
 					bins aen_low  = {0};
 					bins aen_high = {1};
+					}
 		
 		ADSTB_CP:coverpoint tx.adstb{
 					option.at_least = 10;
 					bins adstb_low  = {0};
 					bins adstb_high = {1};			
-		
+					}
 		//TODO		
 		DACK_CP:coverpoint tx.dack{
 					option.at_least = 5;
@@ -70,6 +67,10 @@ class dma_coverage;
 		ADDRESS_HIGH_CP:
 	endgroup
 	
+	function new();
+		dma_cg  = new();
+	endfunction
+
 	task run();
 		forever begin
 		dma_cfg::mon2cov.get(tx);		// get the transaction from monitor class

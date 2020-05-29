@@ -3,6 +3,7 @@
 class dma_config;
   // create all mailboxes required in the environment 
   static mailbox gen2drv;
+  static mailbox drv2gen;
   static mailbox gen2ref;
   static mailbox mon2cov;
   static mailbox mon2sb;

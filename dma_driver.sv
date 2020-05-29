@@ -13,7 +13,7 @@ class dma_driver;
 	task run();
 		forever begin
 		// get transaction from generator
-		dma_cfg::gen2drv.get(tx);
+		dma_config::gen2drv.get(tx);
 		// drive transactions to DUT
 		drive_trans(tx);
 		num_trans++;
@@ -21,9 +21,9 @@ class dma_driver;
 	endtask
 	
 	// task to drive transactions/inputs to DUT
-	task drive_trans(dma_transaction tx)
+	task drive_trans(dma_transaction tx);
 		// drive transactions at clock edge using clocking block
-		@(vif.dma_cb)
+		@(vif.dma_cb);
 		// convert object level information(tx) to signal level(vif) to drive it to the DUT
 	endtask
 	
