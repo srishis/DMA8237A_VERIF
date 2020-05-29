@@ -13,6 +13,7 @@ class dma_config;
   static virtual dma_if vif;
   
   static int error_count;
+  static string testcase;
   
   static bit verbose = 0;
   

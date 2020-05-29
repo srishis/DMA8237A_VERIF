@@ -3,7 +3,7 @@
 package dma_reg_pkg;
 
 
-// TODO: Register Address Map
+//  Register Address Map
 `define BASE_REG_CH0_ADDR   4'h0000
 `define BASE_REG_CH1_ADDR   4'h0010
 `define BASE_REG_CH2_ADDR   4'h0100
@@ -19,7 +19,6 @@ package dma_reg_pkg;
 `define MODE_REG_ADDR 		4'h1011
 `define REQUEST_REG_ADDR 	4'h1001
 `define MASK_REG_ADDR 		4'h1010
-// TODO: `define MASK_REG_ADDR 		4'h1111
 `define TEMP_DATA_REG  		4'h1101
 `define STATUS_REG_ADDR 	4'h1000
 
@@ -50,7 +49,7 @@ cmd_reg_t CMD_REG;
 
 // Request Register
 typedef struct packed{
-	logic [4:0] dont_care;		// REQ_REG[7:3]
+	logic [4:0] reserved;		// REQ_REG[7:3]
 	logic request_bit;			// REQ_REG[2]
 	logic [1:0] ch_sel; 		// REQ_REG[1:0]
 } req_reg_t;
@@ -59,7 +58,7 @@ req_reg_t REQ_REG;
 
 // Mask Register
 typedef struct packed{
-	logic [3:0] dont_care;		// MASK_REG[7:4]
+	logic [3:0] reserved;		// MASK_REG[7:4]
 	logic [3:0] ch_mask_bit;	// MASK_REG[3:0]
 } mask_reg_t;
 
