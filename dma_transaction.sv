@@ -136,7 +136,7 @@ task regs_write(bit[3:0] address, bit [15:0] data);
 endtask : regs_write
 
 // Constraints
-
+// TODO ADITYA: use rand variables for register fields
 // Register Constraints
 constraint mode_reg_c {
 	foreach(MODE_REG[i])  MODE_REG.mode_sel == 1;			// Only single  transfer mode supported
