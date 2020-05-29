@@ -18,6 +18,8 @@ import dma_reg_pkg::*;
   //rand bit [3:0] out_addr;
   rand bit eop;
   rand bit [3:0] dreq;
+  bit [3:0] dreq_old;
+  bit [3:0] dack_sampled;
   rand bit hlda;
   rand bit cs;
   
@@ -36,7 +38,7 @@ import dma_reg_pkg::*;
     tx.iow = this.iow;
     tx.data = this.data;
     tx.addr_lo = this.addr_lo;
-    tx.eop = this.eop;
+    tx.eop = this.eop
     tx.dreq = this.dreq;
     tx.hlda = this.hlda;
     tx.cs = this.cs;
@@ -47,7 +49,7 @@ import dma_reg_pkg::*;
     tx.adstb = this.adstb;
   endfunction
   
-  function int compare(input dma_transaction tx);
+  function void compare(input dma_transaction tx);
     if(
       tx.ior != this.ior ||
       tx.iow != this.iow ||
@@ -100,9 +102,10 @@ task regs_init();
 	foreach(CURR_ADDR_REG[i])			CURR_ADDR_REG 			= '0;
 	foreach(CURR_WORD_COUNT_REG[i])		CURR_WORD_COUNT_REG		= '0;
 endtask : regs_init
-/*
+
 // TODO : confirm prototype
 // Read Register
+/*
 task regs_read(bit[3:0] address, bit [15:0] data);
 	tx = new();
 	tx.pkt_type = REG_READ;
@@ -134,10 +137,20 @@ task regs_write(bit[3:0] address, bit [15:0] data);
 	tx.pkt_type = REG_WRITE;
 	dma_cfg::gen2drv.put(tx);
 endtask : regs_write
-
+*/
 // Constraints
-// TODO ADITYA: use rand variables for register fields
+	constraint dreq_c{
+		dreq inside {[0:15]};
+		dreq != dreq_old;
+	}
+	
+	function void post_randomize();
+		dreq_old = dreq;
+	endfunction
+	
+// TODO: use rand variables for register fields
 // Register Constraints
+/*
 constraint mode_reg_c {
 	foreach(MODE_REG[i])  MODE_REG.mode_sel == 1;			// Only single  transfer mode supported
 	foreach(MODE_REG[i])  MODE_REG.trans_type inside {1,2}; // Only read/write transfers supported
@@ -148,6 +161,8 @@ constraint cmd_reg_c {
 	CMD_REG.ch0_addr_hold == 0;		// Channel 0 address hold disabled
 	CMD_REG.timing_type == 0; 		// Only normal timing_type supported
 	CMD_REG.priority_type == 1; 	// Rotating priority_type supported
+	CMD_REG.dreq_sense == 1;
+	CMD_REG.dack_sense == 0;
 }
 
 constraint request_reg_c {
@@ -159,3 +174,5 @@ constraint mask_reg_c {
 }
 */
 endclass : dma_transaction
+
+
