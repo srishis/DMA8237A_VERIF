@@ -253,7 +253,7 @@ interface dma_if(input logic CLK, input logic RESET);
 	/* Clocking Block to drive stimulus at cycle level */
 	clocking cb @(posedge CLK);
 			
-			default input #0 output #0;
+			default input #0 output #1;
 			
 			inout  	IOR_N;
 			inout  	IOW_N;
@@ -283,4 +283,3 @@ interface dma_if(input logic CLK, input logic RESET);
 	
 endinterface : dma_if
 
-endinterface : dma_if
