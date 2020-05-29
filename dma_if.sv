@@ -275,9 +275,9 @@ interface dma_if(input logic CLK, input logic RESET);
 	
 	// Reset method
 	task apply_reset;
-		repeat(CYCLES)@(posedge CLK);
+		repeat(5)@(posedge CLK);
 		RESET = 1;
-		repeat(CYCLES)@(posedge CLK);	
+		repeat(10)@(posedge CLK);	
 		RESET = 0;
 	endtask : apply_reset
 	
