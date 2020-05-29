@@ -149,6 +149,7 @@ endtask : regs_write
 	endfunction
 	
 // TODO: use rand variables for register fields
+// TODO : Add constraints for other control signals
 // Register Constraints
 /*
 constraint mode_reg_c {
