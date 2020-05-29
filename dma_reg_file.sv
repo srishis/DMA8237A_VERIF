@@ -615,4 +615,4 @@ localparam MASTERCLEARREG                = 8'b10101101;
           end  
   
   
-endmmodule : dma_reg_file
+endmodule : dma_reg_file
