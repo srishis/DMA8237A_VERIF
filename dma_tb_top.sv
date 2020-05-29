@@ -13,12 +13,12 @@ module dma_tb_top;
 	//generate top level clock to be passed to the design and test bench
 	initial forever #(CLK_PERIOD/2) CLK = ~CLK;
 
-	// Apply and release RESET
-	initial apply_reset();
-	
 	// DMA main physical interface instantiation
 	dma_if pif(CLK, RESET);
-
+	
+	// Apply and release RESET
+	initial pif.apply_reset();
+	
 	// DMA design instantiation
 	dma_top DUT (pif);
 
