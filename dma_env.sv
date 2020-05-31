@@ -6,6 +6,7 @@ class dma_env;
 	dma_monitor 	mon;
 	dma_coverage 	cov;
 	dma_sb 			sb;
+	dma_checker	chk;
 	// dma_ref_model rm;
 	
 	// create object for all classes
@@ -15,7 +16,8 @@ class dma_env;
 		mon =	new();
 		cov =	new();
 		sb  =	new();
-		rm  =   new();
+		chk =   dma_checker::create_checker()
+		//rm  =   new();
 	endfunction : new
 
 	// call all run methods of each call in parallel using fork-join_none
