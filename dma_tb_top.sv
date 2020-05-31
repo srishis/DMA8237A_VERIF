@@ -33,6 +33,11 @@ module dma_tb_top;
 		dma_config::vif = pif;
 	end
 	
+	 // Test case selection using $value$plusargs
+	initial begin
+	$value$plusargs("testcase=%s",dma_config::testcase);
+	end
+	
 	 // Test case ending using finish
 	 initial begin
   	 	#GLOBAL_TIMEOUT;
