@@ -1,6 +1,6 @@
 // DMA Registers and Buffers module
 
-module dma_reg_file(dma_if.DP dif, dma_control_if.DP cif,  dma_reg_if.DP rif);
+module dma_reg_file(dma_if.DP dif, dma_control_if.DP cif);  
 
 import dma_reg_pkg::*;
 
@@ -47,59 +47,43 @@ localparam MASTERCLEARREG                = 8'b10101101;
   end
   
 // Read Buffer
-  
-  always_ff@(posedge dif.CLK)
-         begin
-            if(dif.RESET||master_clear)
-                begin
-                   READ_BUF <= '0;
-                end
-           else
-              begin     
-                 IO_DATA_BUF <= READ_BUF;
-              end
-         end
+ // always_ff@(posedge dif.CLK) begin
+ //           if(dif.RESET || master_clear) READ_BUF    <= '0;
+ //           else		   	  IO_DATA_BUF <= READ_BUF;
+ // end
   
 // Write Buffer
   
-  always_ff@(posedge dif.CLK)
-         begin
-            if(dif.RESET||master_clear)
-                begin
-                   WRITE_BUF <= '0;
-                end
-            else
-               begin
-                 WRITE_BUF <= IO_DATA_BUF;
-               end
-          end 
+ // always_ff@(posedge dif.CLK) begin
+ //           if(dif.RESET || master_clear) WRITE_BUF <= '0;
+ //           else		   	    WRITE_BUF <= IO_DATA_BUF;
+ // end
 		  
 // DMA Registers logic
 //Base Address Register
   always_ff@(posedge dif.CLK) begin
-            if(dif.RESET||master_clear)  begin                
-                 BASE_ADDR_CH0_REG <= '0;
-                 BASE_ADDR_CH1_REG <= '0;
-                 BASE_ADDR_CH2_REG <= '0;
-                 BASE_ADDR_CH3_REG <= '0;
-               end
-   
+    if(dif.RESET||master_clear)  begin                
+          BASE_ADDR_CH0_REG <= '0;
+          BASE_ADDR_CH1_REG <= '0;
+          BASE_ADDR_CH2_REG <= '0;
+          BASE_ADDR_CH3_REG <= '0;
+     end
     //the command code for Writing the base and current register -> base Address Reg 0     
-            else if({cif.Program, dif.CS_N, dif.IOR_N, dif.IOW_N, IO_ADDR_BUF} == WRITEBASECURRADDR[0])
-                    begin
-                        if(FF)    // when FF = 1, upper byte is loaded . when FF = 0, lower byte is loaded                               
-                          BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
-                        else
-                          BASE_ADDR_CH0_REG[7:0] <= WRITE_BUF;
-                    end
-  	
+     else if({cif.Program, dif.CS_N, dif.IOR_N, dif.IOW_N, IO_ADDR_BUF} == WRITEBASECURRADDR[0])
+             begin
+          if(FF)    // when FF = 1, upper byte is loaded . when FF = 0, lower byte is loaded                               
+            BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
+          else
+            BASE_ADDR_CH0_REG[7:0] <= WRITE_BUF;
+             end
+    
   //the command code for Writing the base and current register -> base Address Reg 1
-            else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEBASECURRADDR[1])
-                    begin
-                        if(FF)    // when FF = 1, upper byte is loaded . when FF = 0, lower byte is loaded                               
-                          BASE_ADDR_CH1_REG[15:8] <= WRITE_BUF;
-                        else
-                          BASE_ADDR_CH1_REG[7:0] <= WRITE_BUF;
+     else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEBASECURRADDR[1])
+             begin
+                 if(FF)    // when FF = 1, upper byte is loaded . when FF = 0, lower byte is loaded                               
+                   BASE_ADDR_CH1_REG[15:8] <= WRITE_BUF;
+                 else
+                   BASE_ADDR_CH1_REG[7:0] <= WRITE_BUF;
                     end
   //the command code for Writing the base and current register -> base Address Reg 2
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEBASECURRADDR[2])
@@ -117,8 +101,6 @@ localparam MASTERCLEARREG                = 8'b10101101;
                         else
                           BASE_ADDR_CH3_REG[7:0] <= WRITE_BUF;
                     end
-  
-  
             else
                 begin 
                  BASE_ADDR_CH0_REG <= BASE_ADDR_CH0_REG;
@@ -199,14 +181,14 @@ localparam MASTERCLEARREG                = 8'b10101101;
                     CURR_ADDR_CH0_REG <= '0;
                end
   //When TC is reached and the auto initialization is disabled, the value to be set to zero
-              else if ((TC[rif.REQUEST_REG[1:0]])&&(rif.MODE_REG[4]==0))
+              else if ((TC[REQUEST_REG[1:0]])&&(MODE_REG[4]==0))
                   begin    
-                    CURR_ADDR_CH0_REG[rif.REQUEST_REG[1:0]] <= '0;
+                    CURR_ADDR_CH0_REG[REQUEST_REG[1:0]] <= '0;
                   end
   //When TC is reached and the auto initialization is enabled, the value to be re-initialised from the base registers
-            else if ((TC[rif.REQUEST_REG[1:0]]) && (rif.MODE_REG[4]==1))        
+            else if ((TC[REQUEST_REG[1:0]]) && (MODE_REG[4]==1))        
                   begin  
-                    CURR_ADDR_CH0_REG[rif.REQUEST_REG[1:0]] <= BASE_ADDR_CH0_REG[rif.REQUEST_REG[1:0]]; 
+                    CURR_ADDR_CH0_REG[REQUEST_REG[1:0]] <= BASE_ADDR_CH0_REG[REQUEST_REG[1:0]]; 
                   end
   //command code to write curr and base address registers     current Address Reg 0      
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEBASECURRADDR[0])
@@ -254,33 +236,33 @@ localparam MASTERCLEARREG                = 8'b10101101;
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == READCURRADDR[1])
                     begin
                       if(FF)
-                         READ_BUF <= CURR_ADDR_CH0_REG[15:8];
+                         READ_BUF <= CURR_ADDR_CH1_REG[15:8];
                       else
-                         READ_BUF <= CURR_ADDR_CH0_REG[7:0];
+                         READ_BUF <= CURR_ADDR_CH1_REG[7:0];
                     end
   //Read Current Address Register 2
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == READCURRADDR[2])
                     begin
                       if(FF)
-                         READ_BUF <= CURR_ADDR_CH0_REG[15:8];
+                         READ_BUF <= CURR_ADDR_CH2_REG[15:8];
                       else
-                         READ_BUF <= CURR_ADDR_CH0_REG[7:0];
+                         READ_BUF <= CURR_ADDR_CH2_REG[7:0];
                     end
   //Read Current Address Register 3
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == READCURRADDR[3])
                     begin
                       if(FF)
-                         READ_BUF <= CURR_ADDR_CH0_REG[15:8];
+                         READ_BUF <= CURR_ADDR_CH3_REG[15:8];
                       else
-                         READ_BUF <= CURR_ADDR_CH0_REG[7:0];
+                         READ_BUF <= CURR_ADDR_CH3_REG[7:0];
                     end
   
             else if(cif.enCurrAddr) 
                     begin         // to give the most significant 8 bits as output to the i/o data bus
-                      IO_DATA_BUF <= CURR_ADDR_CH0_REG[rif.REQUEST_REG[1:0]][15:8];
+                      IO_DATA_BUF <= CURR_ADDR_CH0_REG[REQUEST_REG[1:0]][15:8];
                     end
              else if(cif.ldTempCurrAddr)      //signal to load the temporary address register to current address register value 
-                    CURR_ADDR_CH0_REG[rif.REQUEST_REG[1:0]] <= TEMP_ADDR_REG;
+                    CURR_ADDR_CH0_REG[REQUEST_REG[1:0]] <= TEMP_ADDR_REG;
             else
                 begin
                     CURR_ADDR_CH0_REG <= CURR_ADDR_CH0_REG;
@@ -302,14 +284,14 @@ localparam MASTERCLEARREG                = 8'b10101101;
                  CURR_WORD_COUNT_CH3_REG <= '0; 
               end 
          
-            else if((TC[rif.REQUEST_REG[1:0]])&&(rif.MODE_REG[4]==0))
+            else if((TC[REQUEST_REG[1:0]])&&(MODE_REG[4]==0))
                begin
-                 CURR_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]] <= '0;
+                 CURR_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]] <= '0;
                end
   
-            else if((TC[rif.REQUEST_REG[1:0]]) && (rif.MODE_REG[4]==1))
+            else if((TC[REQUEST_REG[1:0]]) && (MODE_REG[4]==1))
                begin
-                   CURR_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]] <= BASE_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]];
+                   CURR_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]] <= BASE_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]];
                end
   //write Current word 0
            else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEBASECURRCOUNT[0])
@@ -378,7 +360,7 @@ localparam MASTERCLEARREG                = 8'b10101101;
                     end
              else if(cif.ldTempCurrWord)     //signal to load the temporary address register to current address register value
                   begin
-                    CURR_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]] <= TEMP_WORD_COUNT_REG;
+                    CURR_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]] <= TEMP_WORD_COUNT_REG;
                   end
             else
                 begin 
@@ -402,9 +384,9 @@ localparam MASTERCLEARREG                = 8'b10101101;
                   end 
               else if(cif.ldCurrAddrTemp)     //to load the current address into temporary register and then increment or decrement
                       begin   
-                        TEMP_ADDR_REG <= CURR_ADDR_CH0_REG[rif.REQUEST_REG[1:0]];
-                        {OUT_ADDR_BUF,IO_ADDR_BUF} = CURR_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]][7:0];
-                        if(rif.MODE_REG[5] == 0)
+                        TEMP_ADDR_REG <= CURR_ADDR_CH0_REG[REQUEST_REG[1:0]];
+                        {OUT_ADDR_BUF,IO_ADDR_BUF} = CURR_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]][7:0];
+                        if(MODE_REG[5] == 0)
                             TEMP_ADDR_REG <= TEMP_ADDR_REG  + 16'b0000000000000001;
                         else
                             TEMP_ADDR_REG <= TEMP_ADDR_REG  - 16'b0000000000000001;
@@ -426,12 +408,12 @@ localparam MASTERCLEARREG                = 8'b10101101;
                        end 
               else if(cif.ldCurrWordTemp)
                   begin
-                   TEMP_WORD_COUNT_REG <= CURR_WORD_COUNT_CH0_REG[rif.REQUEST_REG[1:0]];
+                   TEMP_WORD_COUNT_REG <= CURR_WORD_COUNT_CH0_REG[REQUEST_REG[1:0]];
                    TEMP_WORD_COUNT_REG <= TEMP_WORD_COUNT_REG - 16'b0000000000000001;
                  end
              if(TEMP_WORD_COUNT_REG ==0)
                begin
-                TC[rif.REQUEST_REG[1:0]] <= 1;
+                TC[REQUEST_REG[1:0]] <= 1;
                 TEMP_WORD_COUNT_REG <= 16'b1111111111111111;
                end
               else
@@ -450,29 +432,29 @@ localparam MASTERCLEARREG                = 8'b10101101;
             
             if(dif.RESET||master_clear)
               begin
-               rif.MODE_REG[0] <= 16'b0;
-               rif.MODE_REG[1] <= 16'b0;
-               rif.MODE_REG[2] <= 16'b0;
-               rif.MODE_REG[3] <= 16'b0;
+               MODE_REG[0] <= 16'b0;
+               MODE_REG[1] <= 16'b0;
+               MODE_REG[2] <= 16'b0;
+               MODE_REG[3] <= 16'b0;
               end
   //Mode Register 0
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == MODEREGWRITE[0])
-                 rif.MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];  
+                 MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];  
   //Mode Register 1
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == MODEREGWRITE[1])
-                 rif.MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];
+                 MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];
   //Mode Register 2
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == MODEREGWRITE[2])
-                 rif.MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];
+                 MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];
   //Mode Register 3
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == MODEREGWRITE[3])
-                 rif.MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];          
+                 MODE_REG[IO_DATA_BUF[1:0]] <= IO_DATA_BUF[7:2];          
             else 
                 begin
-                rif.MODE_REG[0] <=  rif.MODE_REG[0] ;
-                rif.MODE_REG[1] <=  rif.MODE_REG[1] ;
-                rif.MODE_REG[2] <=  rif.MODE_REG[2] ;
-                rif.MODE_REG[3] <=  rif.MODE_REG[3] ;
+                MODE_REG[0] <=  MODE_REG[0] ;
+                MODE_REG[1] <=  MODE_REG[1] ;
+                MODE_REG[2] <=  MODE_REG[2] ;
+                MODE_REG[3] <=  MODE_REG[3] ;
                 end
             end
                  
@@ -485,11 +467,11 @@ localparam MASTERCLEARREG                = 8'b10101101;
             begin
             
             if(dif.RESET||master_clear)
-               rif.COMMAND_REG <= '0;
+               COMMAND_REG <= '0;
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITECOMMANDREG)
-                 rif.COMMAND_REG <= IO_DATA_BUF;            
+                 COMMAND_REG <= IO_DATA_BUF;            
             else 
-                rif.COMMAND_REG <=  rif.COMMAND_REG;
+                COMMAND_REG <=  COMMAND_REG;
             end
                  
   
@@ -500,11 +482,11 @@ localparam MASTERCLEARREG                = 8'b10101101;
             begin
             
             if(dif.RESET||master_clear)
-               rif.REQUEST_REG= '0;
+               REQUEST_REG= '0;
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEREQUESTREG)
-                 rif.REQUEST_REG <= IO_DATA_BUF;            
+                 REQUEST_REG <= IO_DATA_BUF;            
             else 
-                rif.REQUEST_REG <=  rif.REQUEST_REG ;
+                REQUEST_REG <=  REQUEST_REG ;
             end
                  
   
@@ -515,13 +497,13 @@ localparam MASTERCLEARREG                = 8'b10101101;
             begin
             
             if(dif.RESET||master_clear)
-                 rif.MASK_REG= '0;          
+                 MASK_REG= '0;          
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == WRITEALLMASKREG)
                 begin 
-                 rif.MASK_REG[3:0] <= IO_DATA_BUF[3:0];  
+                 MASK_REG[3:0] <= IO_DATA_BUF[3:0];  
                 end        
             else 
-                rif.MASK_REG <= rif.MASK_REG ;
+                MASK_REG <= MASK_REG ;
             end
                     
                          
@@ -545,59 +527,48 @@ localparam MASTERCLEARREG                = 8'b10101101;
   always_ff@(posedge dif.CLK)
           begin
   
-                   rif.STATUS_REG[0] <= (TC[0])?1'b1:1'b0;
-                   rif.STATUS_REG[1] <= (TC[1])?1'b1:1'b0;
-                   rif.STATUS_REG[2] <= (TC[2])?1'b1:1'b0;
-                   rif.STATUS_REG[3] <= (TC[3])?1'b1:1'b0;  
-                   rif.STATUS_REG[4] <= (cif.VALID_DREQ0)?1'b1:1'b0;  
-                   rif.STATUS_REG[5] <= (cif.VALID_DREQ1)?1'b1:1'b0; 
-                   rif.STATUS_REG[6] <= (cif.VALID_DREQ2)?1'b1:1'b0; 
-                   rif.STATUS_REG[7] <= (cif.VALID_DREQ3)?1'b1:1'b0; 
+                   STATUS_REG[0] <= (TC[0])?1'b1:1'b0;
+                   STATUS_REG[1] <= (TC[1])?1'b1:1'b0;
+                   STATUS_REG[2] <= (TC[2])?1'b1:1'b0;
+                   STATUS_REG[3] <= (TC[3])?1'b1:1'b0;  
+                   STATUS_REG[4] <= (cif.VALID_DREQ0)?1'b1:1'b0;  
+                   STATUS_REG[5] <= (cif.VALID_DREQ1)?1'b1:1'b0; 
+                   STATUS_REG[6] <= (cif.VALID_DREQ2)?1'b1:1'b0; 
+                   STATUS_REG[7] <= (cif.VALID_DREQ3)?1'b1:1'b0; 
   
             if(dif.RESET||master_clear)
-               rif.STATUS_REG <= '0;
+               STATUS_REG <= '0;
             else if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == READSTATUSREG)
-               IO_DATA_BUF <= rif.STATUS_REG;
+               IO_DATA_BUF <= STATUS_REG;
             else  
-               rif.STATUS_REG <= rif.STATUS_REG;
+               STATUS_REG <= STATUS_REG;
             
                          
           end       
             
   // CLEAR FF
-  
-  always_ff@(posedge dif.CLK)
-            begin
-  
-              if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == CLEARFF)
-                  FF <= 1'b0;
-               else
-                  FF <= 1'b1;
-            end
-  
+  always_ff@(posedge dif.CLK) begin
+  if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == CLEARFF)
+      FF <= 1'b0;
+   else
+      FF <= 1'b1;
+  end
   
   //Master Clear
-  
-  always_ff@(posedge dif.CLK)
-            begin
-              master_clear <= 0;
-              if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == CLEARMASKREG)     
-                         master_clear <= 1;
-                else
-                         master_clear <= master_clear;
-              end
+  always_ff@(posedge dif.CLK) begin
+   if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == CLEARMASKREG)     
+              master_clear <= 1;
+     else
+              master_clear <= '0;
+   end
   
   //Clear Mask Register
-  
-  always_ff@(posedge dif.CLK)
-           begin
-             
+  always_ff@(posedge dif.CLK) begin
             if({cif.Program,dif.CS_N,dif.IOR_N,dif.IOW_N,IO_ADDR_BUF} == CLEARMASKREG)
-                        rif.MASK_REG <= '0;
+                        MASK_REG <= '0;
             else
-                        rif.MASK_REG <= rif.MASK_REG ;
+                        MASK_REG <= MASK_REG;
   
           end  
-  
-  
+
 endmodule : dma_reg_file
