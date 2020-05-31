@@ -58,6 +58,7 @@ interface dma_if(input logic CLK, input logic RESET);
 	logic MASTER_CLEAR_CMD;
 	
 	logic CLEAR_MASK_REG_CMD;
+	logic CLEAR_MODE_REG_COUNT_CMD;
 	
 	logic WRITE_MASK_REG_CMD;
 	logic READ_MASK_REG_CMD;
