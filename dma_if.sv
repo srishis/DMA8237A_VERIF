@@ -49,6 +49,8 @@ interface dma_if(input logic CLK, input logic RESET);
 	logic WRITE_COMMAND_REG_CMD;
 	logic READ_STATUS_REG_CMD;
 	
+	logic WRITE_REQUEST_REG_CMD;
+	
 	logic WRITE_MODE_REG_CMD;
 	logic READ_MODE_REG_CMD;
 	
