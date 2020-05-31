@@ -190,7 +190,18 @@ single request bit, single mask bit commands are not supported
   	else	dif.READ_STATUS_REG_CMD = 1'b0;
   else	dif.READ_STATUS_REG_CMD = 1'bx;
   end
-  
+   
+  // write request register command
+  // dif.WRITE_REQUEST_REG_CMD
+  always_comb begin
+  if(!dif.CS_N && !dif.HLDA)
+  	// write to register
+  	if(dif.ADDR_L == 4'h9 && !dif.IOW_N && dif.IOR_N)
+  		dif.WRITE_REQUEST_REG_CMD = 1'b1;
+  	else	dif.WRITE_REQUEST_REG_CMD = 1'b0;
+  else	dif.WRITE_REQUEST_REG_CMD = 1'bx;
+  end
+
   // write mode register command
   // dif.WRITE_MODE_REG_CMD
   always_comb begin
