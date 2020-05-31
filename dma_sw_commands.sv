@@ -257,6 +257,17 @@ single request bit, single mask bit commands are not supported
   else	dif.CLEAR_MASK_REG_CMD = 1'bx;
   end
   
+// clear mode register counter command 
+  // dif.CLEAR_MODE_REG_COUNT_CMD
+  always_comb begin
+  if(!dif.CS_N && !dif.HLDA)
+  	// write to register
+  	if(dif.ADDR_L == 4'hE && dif.IOW_N && !dif.IOR_N)
+  		dif.CLEAR_MODE_REG_COUNT_CMD = 1'b1;
+  	else	dif.CLEAR_MODE_REG_COUNT_CMD = 1'b0;
+  else	dif.CLEAR_MODE_REG_COUNT_CMD = 1'bx;
+  end
+
   // write mask register command
   // dif.WRITE_MASK_REG_CMD
   always_comb begin
