@@ -2,38 +2,22 @@
 
 interface dma_control_if(input logic CLK, RESET);    
 
+// FSM control signals
+logic eop;		
+logic aen;		
+logic adstb;		
+logic ior;		
+logic iow;
+logic memr;		
+logic memw;	
 logic hrq;
-logic ldCurrAddrTemp; 
-logic ldCurrWordTemp; 
-// logic enCurrAddr; 
-logic ldTempCurrAddr; 
-logic ldTempCurrWord; 
-logic Program;
-logic validDACK;
-
-// New control signals simplified
+logic VALID_DACK;
 logic timeout;
 logic en_addr_out;
-
 logic VALID_DREQ0;
 logic VALID_DREQ1;
 logic VALID_DREQ2;
 logic VALID_DREQ3;
-
-modport DP(
-	    input CLK,
-	    input RESET,
-	    input VALID_DREQ0,
-	    input VALID_DREQ1,
-	    input VALID_DREQ2,
-	    input VALID_DREQ3,
-	    input ldCurrAddrTemp, 
-	    input ldCurrWordTemp, 
-	    input enCurrAddr,  
-	    input ldTempCurrAddr, 
-	    input ldTempCurrWord, 
-	    input Program
-);
 
 modport TC(
 	    input  CLK,
@@ -43,19 +27,22 @@ modport TC(
 	    input  VALID_DREQ2,
 	    input  VALID_DREQ3,
 	    output hrq,
-	    output ldCurrAddrTemp, 
-	    output ldCurrWordTemp, 
-	    output enCurrAddr, 
-	    output ldTempCurrAddr, 
-	    output ldTempCurrWord, 
-	    output Program,
-	    output validDACK
+	    output eop,		
+	    output aen,		
+	    output adstb,		
+	    output ior,		
+	    output iow,
+	    output memr,		
+	    output memw,	
+	    output timeout,
+	    output en_addr_out,
+	    output VALID_DACK
 );
 modport PR(
 	    input  CLK,
 	    input  RESET,
 	    input  hrq,
-	    input  validDACK,
+	    input  VALID_DACK,
 	    output VALID_DREQ0,
 	    output VALID_DREQ1,
 	    output VALID_DREQ2,
