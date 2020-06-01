@@ -5,12 +5,15 @@ interface dma_control_if(input logic CLK, RESET);
 logic hrq;
 logic ldCurrAddrTemp; 
 logic ldCurrWordTemp; 
-logic enCurrAddr; 
+// logic enCurrAddr; 
 logic ldTempCurrAddr; 
 logic ldTempCurrWord; 
 logic Program;
 logic validDACK;
 
+// New control signals simplified
+logic timeout;
+logic en_addr_out;
 
 logic VALID_DREQ0;
 logic VALID_DREQ1;
