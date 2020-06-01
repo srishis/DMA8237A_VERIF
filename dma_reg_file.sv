@@ -322,20 +322,32 @@ import dma_reg_pkg::*;
   always_ff@(posedge dif.CLK) begin
 	  if(dif.RESET || dif.MASTER_CLEAR_CMD) 	  IO_DATA_BUF <= '0; 
 	  else if(!CS_N && !dif.IOR_N && dif.IOW_N)	  IO_DATA_BUF <= READ_BUF;
-            else if(cif.en_addr_out) 
-                    // to give the most significant 8 bits as output to the i/o data bus
-		      if(REQUEST_REG[1:0] == 2'b00)
-                      	IO_DATA_BUF <= CURR_ADDR_CH0_REG[15:8];
-		      else if(REQUEST_REG[1:0] == 2'b01)
-                      	IO_DATA_BUF <= CURR_ADDR_CH1_REG[15:8];
-		      else if(REQUEST_REG[1:0] == 2'b10)
-                      	IO_DATA_BUF <= CURR_ADDR_CH2_REG[15:8];
-		      else if(REQUEST_REG[1:0] == 2'b11)
-                      	IO_DATA_BUF <= CURR_ADDR_CH3_REG[15:8];
+           
             else if(READ_STATUS_REG_CMD == 1)
                		IO_DATA_BUF <= STATUS_REG;
 	    else 	IO_DATA_BUF <= IO_DATA_BUF;
   end
+
+ // Valid Address generation
+ always_ff@(negedge dif.ADSTB) begin
+ if(cif.en_addr_out) 
+            // to give the most significant 8 bits as output to the i/o data bus
+	if(REQUEST_REG[1:0] == 2'b00) begin
+               	IO_DATA_BUF 		   <= CURR_ADDR_CH0_REG[15:8];
+	 	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH0_REG[7:0];
+	end
+	 else if(REQUEST_REG[1:0] == 2'b01) begin
+        	IO_DATA_BUF 		   <= CURR_ADDR_CH1_REG[15:8];
+	 	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH1_REG[7:0];
+	end
+	else if(REQUEST_REG[1:0] == 2'b10) begin
+            	IO_DATA_BUF 		   <= CURR_ADDR_CH2_REG[15:8];
+	 	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH2_REG[7:0];
+	end
+	else if(REQUEST_REG[1:0] == 2'b11) begin
+		 IO_DATA_BUF 		   <= CURR_ADDR_CH3_REG[15:8];
+	 	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH3_REG[7:0];
+	end
 
 // Address Buffers
   always_ff@(posedge dif.CLK) begin
@@ -343,16 +355,6 @@ import dma_reg_pkg::*;
 		IO_ADDR_BUF  <= '0;
 		OUT_ADDR_BUF <= '0; 
 	    end
-            else if(cif.en_addr_out) 
-                    // to give the least significant 8 bits as output to the i/o data bus
-		      if(REQUEST_REG[1:0] == 2'b00)
-                      	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH0_REG[7:0];
-		      else if(REQUEST_REG[1:0] == 2'b01)
-                      	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH1_REG[7:0];
-		      else if(REQUEST_REG[1:0] == 2'b10)
-                      	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH2_REG[7:0];
-		      else if(REQUEST_REG[1:0] == 2'b11)
-                      	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH3_REG[7:0];
 	    else begin
 		IO_ADDR_BUF  <= IO_ADDR_BUF ;
 		OUT_ADDR_BUF <= OUT_ADDR_BUF; 
