@@ -12,9 +12,9 @@ import dma_reg_pkg::*;
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit ior;
   rand bit iow;
-  rand bit [7:0] data;
+  bit [7:0] data;
   //rand bit [7:0] data_out;
-  rand bit [3:0] addr_lo;
+  bit [3:0] addr_lo;
   //rand bit [3:0] out_addr;
   rand bit eop;
   rand bit [3:0] dreq;
@@ -30,6 +30,9 @@ import dma_reg_pkg::*;
   bit aen;
   bit adstb;
   
+  //control register write done flag
+  bit ctrl_regs_wr_done;
+  
   // Methods
   // deep copy method
   function void copy(output dma_transaction tx);
@@ -38,7 +41,7 @@ import dma_reg_pkg::*;
     tx.iow = this.iow;
     tx.data = this.data;
     tx.addr_lo = this.addr_lo;
-    tx.eop = this.eop
+    tx.eop = this.eop;
     tx.dreq = this.dreq;
     tx.hlda = this.hlda;
     tx.cs = this.cs;
@@ -73,18 +76,18 @@ import dma_reg_pkg::*;
       	$display("-----PRINTING TRANSACTION CLASS PROPERTIES---------");
       	$display("\t IOR = %b", tx.ior);
       	$display("\t IOW = %b", tx.iow);
-	$display("\t DATA = %b", tx.data);
-	$display("\t ADDR_L = %b", tx.addr_lo);
-	$display("\t ADDR_H = %b", tx.addr_hi);
-	$display("\t EOP = %b", tx.eop);
-	$display("\t DREQ = %b", tx.dreq);
-	$display("\t DACK = %b", tx.dack);
-	$display("\t HLDA = %b", tx.hlda);
-	$display("\t HRQ = %b", tx.hrq);
-	$display("\t CS = %b", tx.cs);
-	$display("\t AEN = %b", tx.aen);
-	$display("\t ADSTB = %b", tx.adstb);
-	$display("---------------------------------------------------");
+		$display("\t DATA = %b", tx.data);
+		$display("\t ADDR_L = %b", tx.addr_lo);
+		$display("\t ADDR_H = %b", tx.addr_hi);
+		$display("\t EOP = %b", tx.eop);
+		$display("\t DREQ = %b", tx.dreq);
+		$display("\t DACK = %b", tx.dack);
+		$display("\t HLDA = %b", tx.hlda);
+		$display("\t HRQ = %b", tx.hrq);
+		$display("\t CS = %b", tx.cs);
+		$display("\t AEN = %b", tx.aen);
+		$display("\t ADSTB = %b", tx.adstb);
+		$display("---------------------------------------------------");
   endfunction
 
 // Initialize the registers	
@@ -172,6 +175,22 @@ constraint request_reg_c {
 
 constraint mask_reg_c {
 	MASK_REG.reserved == 0;
+}
+constraint transaction_c{
+if(tx_type == REG_READ_CFG) {	cs = 1'b0; 
+								ior = 1'b0;
+								iow = 1'b1; 
+								dreq = 4'b0;
+								hlda = 1'b0;
+								eop = 1'b1;}
+else if(tx_type == REG_WRITE_CFG) 
+							{	cs = 1'b0; 
+								ior = 1'b1;
+								iow = 1'b0;
+								dreq = 4'b0;
+								hlda = 1'b0;
+								eop = 1'b1;}
+
 }
 */
 endclass : dma_transaction

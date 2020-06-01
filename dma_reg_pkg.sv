@@ -18,7 +18,7 @@ package dma_reg_pkg;
 `define CMD_REG_ADDR 		4'h1000
 `define MODE_REG_ADDR 		4'h1011
 `define REQUEST_REG_ADDR 	4'h1001
-`define MASK_REG_ADDR 		4'h1010
+`define MASK_REG_ADDR 		4'h1111
 `define TEMP_DATA_REG  		4'h1101
 `define STATUS_REG_ADDR 	4'h1000
 
