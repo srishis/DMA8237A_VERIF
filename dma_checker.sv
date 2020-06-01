@@ -1,28 +1,40 @@
 // Checker class performs the protocol functional checks and reports any mismatch
 
-virtual class dma_checker;
-	
-	dma_transaction tx;
-	tx_type_t tx_type;
+class dma_checker;
 
-	// factory for testbench
-	function dma_checker create_tester(dma_config cfg);
-		dma_checker checker_inst;
-		dma_checker_standard standard;
-
-		if (cfg::testcase == "standard") begin
-			standard = new();
-			checker_inst = standard;
-		end else begin
-			$display("Unknown checker\n");
-		end
-
-		return checker_inst;
-	endfunction
-	
 	// checking methods
-	virtual task run();
-		forever mon2chk.get(tx);
+	task run();
+		forever begin
+			mon2chk.get(tx);
+			// checker logic
+		end
 	endtask : run
+	
+	// check HRQ signal
+	task check_hrq(bit data);
+		
+	endtask : check_hrq
+	
+	// check Address generation
+	task check_address_gen();
+	
+	endtask : check_address_match
+	
+	// check DACK
+	task check_dack();
+	
+	endtask : check_dack
+	
+	// check read write signals
+	// check if IOW = 0, MEMR_N = 0, IOR = 1, MEMW_N = 0
+	task check_read_write_signals(bit iow, bit memr, bit ior, bit memw);
+		
+	endtask : check_read_write_signals
+	
+	// check EOP_N signal
+	task check_eop(bit data);
+		
+	endtask : check_eop
+	
 	
 endclass : dma_checker

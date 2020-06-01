@@ -16,7 +16,8 @@ class dma_env;
 		mon =	new();
 		cov =	new();
 		sb  =	new();
-		chk =   dma_checker::create_checker()
+		//chk =   dma_checker::create_checker()
+		chk =   new();
 		//rm  =   new();
 	endfunction : new
 
