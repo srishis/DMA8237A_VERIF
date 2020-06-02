@@ -1,32 +1,30 @@
- // DMA Register package
+// DMA Register package
 
 package dma_reg_pkg;
-
-
+	
 //  Register Address Map
-`define BASE_REG_CH0_ADDR   4'h0000
-`define BASE_REG_CH1_ADDR   4'h0010
-`define BASE_REG_CH2_ADDR   4'h0100
-`define BASE_REG_CH3_ADDR   4'h0110
+parameter BASE_ADDR_REG_CH0_ADDR   = 4'h0000
+parameter BASE_ADDR_REG_CH1_ADDR   = 4'h0010
+parameter BASE_ADDR_REG_CH2_ADDR   = 4'h0100
+parameter BASE_ADDR_REG_CH3_ADDR   = 4'h0110
 
-`define BASE_REG_CH0_COUNT   4'h0001
-`define BASE_REG_CH1_COUNT   4'h0011
-`define BASE_REG_CH2_COUNT   4'h0101
-`define BASE_REG_CH3_COUNT   4'h0111
+parameter BASE_WORD_COUNT_REG_CH0_ADDR   = 4'h0001
+parameter BASE_WORD_COUNT_REG_CH1_ADDR   = 4'h0011
+parameter BASE_WORD_COUNT_REG_CH2_ADDR   = 4'h0101
+parameter BASE_WORD_COUNT_REG_CH3_ADDR   = 4'h0111
 
-
-`define CMD_REG_ADDR 		4'h1000
-`define MODE_REG_ADDR 		4'h1011
-`define REQUEST_REG_ADDR 	4'h1001
-`define MASK_REG_ADDR 		4'h1010
-`define TEMP_DATA_REG  		4'h1101
-`define STATUS_REG_ADDR 	4'h1000
+parameter COMMAND_REG_ADDR 	= 4'h1000
+parameter MODE_REG_ADDR 	= 4'h1011
+parameter REQUEST_REG_ADDR 	= 4'h1001
+parameter MASK_REG_ADDR 	= 4'h1010
+parameter TEMP_DATA_REG  	= 4'h1101
+parameter STATUS_REG_ADDR 	= 4'h1000
 
 // 4 x Mode Register
 typedef struct packed{
 	logic [1:0] mode_sel;		// MODE_REG[7:6]
-	logic addr_inc_dec;			// MODE_REG[5]
-	logic auto_init_en;			// MODE_REG[4]
+	logic addr_inc_dec;		// MODE_REG[5]
+	logic auto_init_en;		// MODE_REG[4]
 	logic [1:0] trans_type; 	// MODE_REG[3:2]
 	logic [1:0] ch_sel; 		// MODE_REG[1:0]
 } mode_reg_t;
@@ -45,16 +43,16 @@ typedef struct packed{
 	logic mem2mem_en;		// CMD_REG[0]
 } cmd_reg_t;
 
-cmd_reg_t CMD_REG;
+cmd_reg_t COMMAND_REG;
 
 // Request Register
 typedef struct packed{
 	logic [4:0] reserved;		// REQ_REG[7:3]
-	logic request_bit;			// REQ_REG[2]
+	logic request_bit;		// REQ_REG[2]
 	logic [1:0] ch_sel; 		// REQ_REG[1:0]
 } req_reg_t;
 
-req_reg_t REQ_REG;
+req_reg_t REQUEST_REG;
 
 // Mask Register
 typedef struct packed{
@@ -72,32 +70,35 @@ typedef struct packed{
 
 status_reg_t STATUS_REG;
 
-// Temporary Register
-logic [7:0] TEMP_DATA_REG;
-
 // 4 x Current Address Register
-logic [15:0] CURR_ADDR_REG[4];
+logic [15:0] CURR_ADDR_CH0_REG;
+logic [15:0] CURR_ADDR_CH1_REG;
+logic [15:0] CURR_ADDR_CH2_REG;
+logic [15:0] CURR_ADDR_CH3_REG;
 
 // 4 x Current Word Count Register
-logic [15:0] CURR_WORD_COUNT_REG[4];
+logic [15:0]  CURR_WORD_COUNT_CH0_REG;
+logic [15:0]  CURR_WORD_COUNT_CH1_REG;
+logic [15:0]  CURR_WORD_COUNT_CH2_REG;
+logic [15:0]  CURR_WORD_COUNT_CH3_REG;
 
 // 4 x Base Address Register
-logic [15:0] BASE_ADDR_REG[4];
+logic [15:0] BASE_ADDR_CH0_REG;
+logic [15:0] BASE_ADDR_CH1_REG;
+logic [15:0] BASE_ADDR_CH2_REG;
+logic [15:0] BASE_ADDR_CH3_REG;
 
 // 4 x Base Word Count Register
-logic [15:0] BASE_WORD_COUNT_REG[4];
-
-// Temporary Address Register
-logic [15:0] TEMP_ADDR_REG;
-
-// Temporary Address Register
-logic [15:0] TEMP_WORD_COUNT_REG;
+logic [15:0] BASE_WORD_COUNT_CH0_REG;
+logic [15:0] BASE_WORD_COUNT_CH1_REG;
+logic [15:0] BASE_WORD_COUNT_CH2_REG;
+logic [15:0] BASE_WORD_COUNT_CH3_REG;
 
 // Datapath Buffers
-logic [3:0] ioAddrBuf;      
-logic [3:0] outAddrBuf;      
-logic [7:0] ioDataBuf;  	
-logic [7:0] readBuf;
-logic [7:0] writeBuf;
+logic [3:0] IO_ADDR_BUF;      
+logic [3:0] OUT_ADDR_BUF;      
+logic [7:0] IO_DATA_BUF;  	
+logic [7:0] READ_BUF;
+logic [7:0] WRITE_BUF;
 
 endpackage : dma_reg_pkg
