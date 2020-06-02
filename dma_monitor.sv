@@ -31,20 +31,24 @@ class dma_monitor;
 			tx.iow_in 	= vif.dma_cb.IOW_N;
 			tx.memr_in 	= vif.dma_cb.MEMR_N;
 			tx.memw_in 	= vif.dma_cb.MEMW_N;
-			if(tx.iow_in)
+			if(!tx.iow_in)
 				tx.tx_type	= REG_WRITE_CFG;
-			if(tx.ior_in)
+			if(!tx.ior_in)
 				tx.tx_type	= REG_READ_CFG;
 		end
 		if(tx.cycle == ACTIVE) begin	
 			tx.data_out    	= vif.dma_cb.DB;
-			tx.addr_low_out	= vif.dma_cb.ADDR_L;
+			tx.addr_lo  	= vif.dma_cb.ADDR_L;
 			tx.ior_out 	= vif.dma_cb.IOR_N;
 			tx.iow_out 	= vif.dma_cb.IOW_N;
 			tx.memr_out 	= vif.dma_cb.MEMR_N;
 			tx.memw_out 	= vif.dma_cb.MEMW_N;
-			if(tx.iow_out)  tx.tx_type = DMA_WRITE;
-			if(tx.ior_out)  tx.tx_type = DMA_READ;
+			if(!tx.iow_out)  tx.tx_type = DMA_WRITE;
+			if(!tx.ior_out)  tx.tx_type = DMA_READ;
+			if((!tx.ior_out && !tx.memw_out)|| (!tx.iow_out && !tx.memr_out)) begin
+			tx.is_addr_valid = 1;
+			tx.sample_dack   = 1;
+			end
 		end
 		
 		// send them to coverage, scoreaboard/checker
@@ -55,4 +59,3 @@ class dma_monitor;
 	endtask : run
 
 endclass : dma_monitor
-
