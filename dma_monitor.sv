@@ -38,7 +38,7 @@ class dma_monitor;
 		end
 		if(tx.cycle == ACTIVE) begin	
 			tx.data_out    	= vif.dma_cb.DB;
-			tx.addr_lo  	= vif.dma_cb.ADDR_L;
+			tx.addr_low_out	= vif.dma_cb.ADDR_L;
 			tx.ior_out 	= vif.dma_cb.IOR_N;
 			tx.iow_out 	= vif.dma_cb.IOW_N;
 			tx.memr_out 	= vif.dma_cb.MEMR_N;
