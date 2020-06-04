@@ -2,7 +2,7 @@
 //TODO: update properties in all methods
 
 // transaction types
-typedef enum {BASE_REG_CFG, REG_WRITE_CFG, REG_READ_CFG, DMA_WRITE, DMA_READ} tx_type_t;
+typedef enum {REQ_TX, BASE_REG_READ_CFG, BASE_REG_CFG, REG_WRITE_CFG, REG_READ_CFG, DMA_WRITE, DMA_READ} tx_type_t;
 // DMA cycles
 typedef enum {IDLE, ACTIVE} dma_cycles_t;
 
@@ -18,8 +18,6 @@ import dma_reg_pkg::*;
   rand bit [3:0] dreq;
   rand bit [7:0] data_in;
   rand bit ior_in;
-  rand bit memr_in;
-  rand bit memw_in;
   rand bit iow_in;
   rand bit hlda;
   rand bit cs;
