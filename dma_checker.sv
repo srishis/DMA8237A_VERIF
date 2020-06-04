@@ -4,13 +4,23 @@ class dma_checker;
 
 	bit [7:0] exp_data, actual_data;
 	string reg_name;
+
+	typedef enum { SI, SP, S0, S1, S2, S3, S4,
+		       S11, S12, S13, S14,
+		       S21, S22, S23, S24
+	} dmaState;
+
 	dma_transaction tx;
 	tx_type_t tx_type;
-	
-	// checking methods
+	dmaState state;
+
+	// run through tests
 	task run();
 	$display("[CHECKER]: Inside DMA checker run task!");
-		forever mon2chk.get(tx);
+		state = SI;
+			// get transaction from mailbox and check results
+		forever begin
+		mon2chk.get(tx);
 		// checker logic
 		// register read response
 		if(tx.cycle == IDLE && tx.tx_type == REG_READ_CFG) begin
@@ -30,9 +40,46 @@ class dma_checker;
 				if(tx.dack != tx.dack_sampled) 
 				$display("[CHECKER]: DACK polarity check failed with Expected data = %0h and Actual data = %0h", tx.dack, tx.dack_sampled);
 				
-		// priority check
-		
+			// update state at end of cycle
+			updateState();
+		end
 	endtask : run
+
+	// task to update state
+	task updateState();
+		case (state)
+			SI: if (tx.dreq)
+				state = S0;
+			    else
+                                state = SI;
+			S0: if (tx.hlda)
+			        state = S1;
+			    else if (!tx.hlda)
+				state = S0;.
+			    else if (!tx.eop)
+				state = SI;
+			S1: if (!tx.eop)
+				state = SI;
+			    else
+				state = S2;
+			S2: if (!tx.eop)
+				state = SI;
+			    else
+				state = S3;
+			S3: if (!tx.eop)
+				state = SI;
+			    else
+				state = S4;
+			S4:
+				state = SI;
+		endcase
+	endtask
+	
+	// check HRQ signal
+	// get transaction from mailbox and check results
+	task check_hrq(bit data);
+			
+	endtask : check_hrq
 	
 	task get_register_name();
 		if(tx.addr_low_in == CMD_REG_ADDR)

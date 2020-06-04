@@ -7,6 +7,7 @@ class dma_config;
   static mailbox gen2ref;
   static mailbox mon2cov;
   static mailbox mon2sb;
+  static mailbox mon2ck;
   static mailbox ref2sb;
   
   // create virtual interface handle to pass to all classes from test bench top
