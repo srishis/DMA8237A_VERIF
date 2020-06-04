@@ -1,24 +1,25 @@
 // DMA Register package
 
 package dma_reg_pkg;
-	
+
+parameter ADDRESS_LENGTH = 16;
 //  Register Address Map
-parameter BASE_ADDR_REG_CH0_ADDR   = 4'h0000
-parameter BASE_ADDR_REG_CH1_ADDR   = 4'h0010
-parameter BASE_ADDR_REG_CH2_ADDR   = 4'h0100
-parameter BASE_ADDR_REG_CH3_ADDR   = 4'h0110
+parameter BASE_ADDR_REG_CH0_ADDR   = 4'h0;
+parameter BASE_ADDR_REG_CH1_ADDR   = 4'h2;
+parameter BASE_ADDR_REG_CH2_ADDR   = 4'h4;
+parameter BASE_ADDR_REG_CH3_ADDR   = 4'h6;
 
-parameter BASE_WORD_COUNT_REG_CH0_ADDR   = 4'h0001
-parameter BASE_WORD_COUNT_REG_CH1_ADDR   = 4'h0011
-parameter BASE_WORD_COUNT_REG_CH2_ADDR   = 4'h0101
-parameter BASE_WORD_COUNT_REG_CH3_ADDR   = 4'h0111
+parameter BASE_WORD_COUNT_REG_CH0_ADDR   = 4'h1;
+parameter BASE_WORD_COUNT_REG_CH1_ADDR   = 4'h3;
+parameter BASE_WORD_COUNT_REG_CH2_ADDR   = 4'h5;
+parameter BASE_WORD_COUNT_REG_CH3_ADDR   = 4'h7;
 
-parameter COMMAND_REG_ADDR 	= 4'h1000
-parameter MODE_REG_ADDR 	= 4'h1011
-parameter REQUEST_REG_ADDR 	= 4'h1001
-parameter MASK_REG_ADDR 	= 4'h1010
-parameter TEMP_DATA_REG  	= 4'h1101
-parameter STATUS_REG_ADDR 	= 4'h1000
+parameter COMMAND_REG_ADDR 	= 4'h8;
+parameter MODE_REG_ADDR 	= 4'hb;
+parameter REQUEST_REG_ADDR 	= 4'h9;
+parameter MASK_REG_ADDR 	= 4'ha;
+parameter TEMP_DATA_REG  	= 4'hc;
+parameter STATUS_REG_ADDR 	= 4'h8;
 
 // 4 x Mode Register
 typedef struct packed{
