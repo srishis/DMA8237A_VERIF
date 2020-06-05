@@ -105,15 +105,16 @@ class dma_coverage;
 					option.auto_bin_max = 4;
 					}
 					
+					
 		HLDA_HRQ_CROSS:   cross HLDA_IN_CP,HRQ_OUT_CP{bins hlda_hrq = binsof(HLDA_IN_CP) || binsof(HRQ_OUT_CP);}
 		HLDA_AEN_CROSS:   cross HLDA_IN_CP,AEN_OUT_CP{bins hlda_aen = binsof(HLDA_IN_CP) || binsof(AEN_OUT_CP);}
 		AEN_ADSTRB_CROSS: cross ADSTB_OUT_CP,AEN_OUT_CP{bins aen_adstrb = binsof(AEN_OUT_CP) || binsof(ADSTB_OUT_CP);}
 		
 		IOR_MEMW_CROSS:	  cross IOR_OUT_CP,MEMW_OUT_CP{bins ior_memw = binsof(IOR_OUT_CP.ior_out_low) || binsof(MEMW_OUT_CP.memw_out_low);}
-		IOW_MEMR_CROSS:   cross IOW_OUT_CP,MEMW_OUT_CP{bins iow_memr = binsof(IOW_OUT_CP.iow_out_low) || binsof(MEMW_OUT_CP.memw_out_low);}
+		IOW_MEMR_CROSS:   cross IOW_OUT_CP,MEMR_OUT_CP{bins iow_memr = binsof(IOW_OUT_CP.iow_out_low) || binsof(MEMR_OUT_CP.memr_out_low);}
 		
 		IOR_ADDRESS_LOW_CROSS:	  cross IOR_IN_CP,ADDRESS_LOW_IN_CP{bins ior_addr  = binsof(IOR_IN_CP.ior_in_low) || binsof(ADDRESS_LOW_IN_CP);}
-		IOW_ADDRESS_LOW_CROSS:	  cross IOW_IN_CP,ADDRESS_LOW_IN_CP{bins iw_addr = binsof(IOW_IN_CP.iow_in_low) || binsof(ADDRESS_LOW_IN_CP);}
+		IOW_ADDRESS_LOW_CROSS:	  cross IOW_IN_CP,ADDRESS_LOW_IN_CP{bins iw_addr =  binsof(IOW_IN_CP.iow_in_low) || binsof(ADDRESS_LOW_IN_CP);}
 		
 		IOR_DATA_LOW_CROSS:	  cross IOR_IN_CP,DATA_IN_CP{bins ior_data  = binsof(IOR_IN_CP.ior_in_low) || binsof(DATA_IN_CP);}
 		IOW_DATA_LOW_CROSS:	  cross IOW_IN_CP,DATA_IN_CP{bins iow_data = binsof(IOW_IN_CP.iow_in_low) || binsof(DATA_IN_CP);}
@@ -134,4 +135,4 @@ class dma_coverage;
 	endtask
 
 
-endclass
+endclass : dma_coverage

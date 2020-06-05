@@ -126,10 +126,10 @@ interface dma_if(input logic CLK, input logic RESET);
 	);
 	
 	/* Modport for Test Bench */
-	modport TB(clocking cb);
+	modport TB(clocking dma_cb);
 	
 	// Modport for driver
-	modport DRIVER(clocking cb, RESET);
+	modport DRIVER(clocking dma_cb, RESET);
 	
 	// Modport for monitor
 	modport MON(

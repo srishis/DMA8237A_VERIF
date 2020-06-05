@@ -526,4 +526,4 @@ class dma_generator;
 	
 	endtask : reg_write
 
-endclass
+endclass : dma_generator

@@ -7,9 +7,9 @@ typedef enum {REQ_TX, BASE_REG_READ_CFG, BASE_REG_CFG, REG_WRITE_CFG, REG_READ_C
 typedef enum {IDLE, ACTIVE} dma_cycles_t;
 
 
+import dma_reg_pkg::*;
 class dma_transaction;
 
-import dma_reg_pkg::*;
 
   tx_type_t 	tx_type; 
   dma_cycles_t	cycle; 
@@ -46,7 +46,7 @@ import dma_reg_pkg::*;
   bit late_write_en;
   bit is_addr_valid;
   
-  
+  /*
   // Methods
   // deep copy method
   function void copy(output dma_transaction tx);
@@ -127,7 +127,7 @@ task regs_init();
 	foreach(CURR_ADDR_REG[i])			CURR_ADDR_REG 			= '0;
 	foreach(CURR_WORD_COUNT_REG[i])		CURR_WORD_COUNT_REG		= '0;
 endtask : regs_init
-
+*/
 // Constraints
 	constraint dreq_c{
 		//dreq inside {[0:15]};
