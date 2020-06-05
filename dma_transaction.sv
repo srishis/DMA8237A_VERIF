@@ -13,6 +13,10 @@ import dma_reg_pkg::*;
 
   tx_type_t 	tx_type; 
   dma_cycles_t	cycle; 
+
+  // TODO it seems like these should be two separate transactions
+  // (inputs vs outputs. Leave alone for now)
+
   // Properties
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit [3:0] dreq;
