@@ -1,7 +1,7 @@
 // DMA Priority Module 
 
 
-module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif); 
+module dma_priority(dma_if.PR dif, dma_control_if.PR cif);
 	
 	logic validDREQ; 
 	logic [3:0] pencoderOut, dack;
@@ -60,26 +60,26 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 	// decoding registers for valid DREQ
 	// decode Request register	
 	always_comb begin
-		if(rif.requestReg[1:0] == 2'b00 && rif.requestReg[2]) 	        CH0_SEL = 1;
-		else if(rif.requestReg[1:0] == 2'b00 && !rif.requestReg[2])     CH0_SEL = 0; 
-		if(rif.requestReg[1:0] == 2'b01 && rif.requestReg[2]) 	        CH1_SEL = 1;
-		else if(rif.requestReg[1:0] == 2'b01 && !rif.requestReg[2])     CH1_SEL = 0; 
-		if(rif.requestReg[1:0] == 2'b10 && rif.requestReg[2])           CH2_SEL = 1;
-		else if(rif.requestReg[1:0] == 2'b10 && !rif.requestReg[2])     CH2_SEL = 0; 
-		if(rif.requestReg[1:0] == 2'b11 && rif.requestReg[2])           CH3_SEL = 1;
-		else if(rif.requestReg[1:0] == 2'b11 && !rif.requestReg[2])     CH3_SEL = 0; 
+		if(REQUEST_REG[1:0] == 2'b00 && REQUEST_REG[2]) 	  CH0_SEL = 1;
+		else if(REQUEST_REG[1:0] == 2'b00 && !REQUEST_REG[2])     CH0_SEL = 0; 
+		if(REQUEST_REG[1:0] == 2'b01 && REQUEST_REG[2]) 	  CH1_SEL = 1;
+		else if(REQUEST_REG[1:0] == 2'b01 && !REQUEST_REG[2])     CH1_SEL = 0; 
+		if(REQUEST_REG[1:0] == 2'b10 && REQUEST_REG[2])           CH2_SEL = 1;
+		else if(REQUEST_REG[1:0] == 2'b10 && !REQUEST_REG[2])     CH2_SEL = 0; 
+		if(REQUEST_REG[1:0] == 2'b11 && REQUEST_REG[2])           CH3_SEL = 1;
+		else if(REQUEST_REG[1:0] == 2'b11 && !REQUEST_REG[2])     CH3_SEL = 0; 
 	end
 
 	// decode Mask register	
 	always_comb begin
-		if(rif.maskReg[1:0] == 2'b00 && rif.maskReg[2]) 	 CH0_MASK = 1;
-		else if(rif.maskReg[1:0] == 2'b00 && !rif.maskReg[2])    CH0_MASK = 0; 
-		if(rif.maskReg[1:0] == 2'b01 && rif.maskReg[2]) 	 CH1_MASK = 1;
-		else if(rif.maskReg[1:0] == 2'b01 && !rif.maskReg[2])    CH1_MASK = 0; 
-		if(rif.maskReg[1:0] == 2'b10 && rif.maskReg[2])          CH2_MASK = 1;
-		else if(rif.maskReg[1:0] == 2'b10 && !rif.maskReg[2])    CH2_MASK = 0; 
-		if(rif.maskReg[1:0] == 2'b11 && rif.maskReg[2])          CH3_MASK = 1;
-		else if(rif.maskReg[1:0] == 2'b11 && !rif.maskReg[2])    CH3_MASK = 0; 
+		if(MASK_REG[1:0] == 2'b00 && MASK_REG[2]) 	   CH0_MASK = 1;
+		else if(MASK_REG[1:0] == 2'b00 && !MASK_REG[2])    CH0_MASK = 0; 
+		if(MASK_REG[1:0] == 2'b01 && MASK_REG[2]) 	   CH1_MASK = 1;
+		else if(MASK_REG[1:0] == 2'b01 && !MASK_REG[2])    CH1_MASK = 0; 
+		if(MASK_REG[1:0] == 2'b10 && MASK_REG[2])          CH2_MASK = 1;
+		else if(MASK_REG[1:0] == 2'b10 && !MASK_REG[2])    CH2_MASK = 0; 
+		if(MASK_REG[1:0] == 2'b11 && MASK_REG[2])          CH3_MASK = 1;
+		else if(MASK_REG[1:0] == 2'b11 && !MASK_REG[2])    CH3_MASK = 0; 
 	end
 
 	
@@ -87,37 +87,37 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 	always_comb begin
 		
 		// DREQ polarity
-		if(!rif.commandReg[6] && CH0_SEL && !CH0_MASK)     DREQ0_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[6] && CH0_SEL && !CH0_MASK) DREQ0_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[6] && CH0_SEL && !CH0_MASK)     DREQ0_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[6] && CH0_SEL && !CH0_MASK) DREQ0_ACTIVE_LOW = 1;
 		else begin DREQ0_ACTIVE_HIGH = 0; DREQ0_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[6] && CH1_SEL && !CH1_MASK)     DREQ1_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[6] && CH1_SEL && !CH1_MASK) DREQ1_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[6] && CH1_SEL && !CH1_MASK)     DREQ1_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[6] && CH1_SEL && !CH1_MASK) DREQ1_ACTIVE_LOW = 1;
 		else begin DREQ1_ACTIVE_HIGH = 0; DREQ1_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[6] && CH2_SEL && !CH2_MASK)     DREQ2_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[6] && CH2_SEL && !CH2_MASK) DREQ2_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[6] && CH2_SEL && !CH2_MASK)     DREQ2_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[6] && CH2_SEL && !CH2_MASK) DREQ2_ACTIVE_LOW = 1;
 		else begin DREQ2_ACTIVE_HIGH = 0; DREQ2_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[6] && CH3_SEL && !CH3_MASK)     DREQ3_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[6] && CH3_SEL && !CH3_MASK) DREQ3_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[6] && CH3_SEL && !CH3_MASK)     DREQ3_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[6] && CH3_SEL && !CH3_MASK) DREQ3_ACTIVE_LOW = 1;
 		else begin DREQ3_ACTIVE_HIGH = 0; DREQ3_ACTIVE_LOW = 0; end  		   		
 
 		// DACK polarity
-		if(!rif.commandReg[7] && CH0_SEL && !CH0_MASK)     DACK0_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[7] && CH0_SEL && !CH0_MASK) DACK0_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[7] && CH0_SEL && !CH0_MASK)     DACK0_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[7] && CH0_SEL && !CH0_MASK) DACK0_ACTIVE_LOW = 1;
 		else begin DACK0_ACTIVE_HIGH = 0; DACK0_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[7] && CH1_SEL && !CH1_MASK)     DACK1_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[7] && CH1_SEL && !CH1_MASK) DACK1_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[7] && CH1_SEL && !CH1_MASK)     DACK1_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[7] && CH1_SEL && !CH1_MASK) DACK1_ACTIVE_LOW = 1;
 		else begin DACK1_ACTIVE_HIGH = 0; DACK1_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[7] && CH2_SEL && !CH2_MASK)     DACK2_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[7] && CH2_SEL && !CH2_MASK) DACK2_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[7] && CH2_SEL && !CH2_MASK)     DACK2_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[7] && CH2_SEL && !CH2_MASK) DACK2_ACTIVE_LOW = 1;
 		else begin DACK2_ACTIVE_HIGH = 0; DACK2_ACTIVE_LOW = 0; end  		   		
 
-		if(!rif.commandReg[7] && CH3_SEL && !CH3_MASK)     DACK3_ACTIVE_HIGH = 1;
-		else if(rif.commandReg[7] && CH3_SEL && !CH3_MASK) DACK3_ACTIVE_LOW = 1;
+		if(!COMMAND_REG[7] && CH3_SEL && !CH3_MASK)     DACK3_ACTIVE_HIGH = 1;
+		else if(COMMAND_REG[7] && CH3_SEL && !CH3_MASK) DACK3_ACTIVE_LOW = 1;
 		else begin DACK3_ACTIVE_HIGH = 0; DACK3_ACTIVE_LOW = 0; end  
 		
 	end
@@ -165,8 +165,8 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 
 	// select priority encoding based on register configuration
 	always_comb begin
-		if(validDREQ && rif.commandReg[4]) 	      enRotatingPriority <= 1; 
-		else if(validDREQ && !rif.commandReg[4])      enFixedPriority    <= 1;
+		if(validDREQ && COMMAND_REG[4]) 	      enRotatingPriority <= 1; 
+		else if(validDREQ && !COMMAND_REG[4])         enFixedPriority    <= 1;
 	end
 	
 	// priority encoder
@@ -179,14 +179,16 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 			 cif.VALID_DREQ2  : pencoderOut = 4'b0100; 	 
 			 cif.VALID_DREQ3  : pencoderOut = 4'b1000; 	 
 			endcase
-
+		/*
 		else if(enRotatingPriority)
 			if(CH0_PRIORITY == 2'b11) 	pencoderOut = 4'b0001;
 			else if(CH1_PRIORITY == 2'b11)  pencoderOut = 4'b0010;
 			else if(CH2_PRIORITY == 2'b11)  pencoderOut = 4'b0100;
 			else if(CH3_PRIORITY == 2'b11)  pencoderOut = 4'b1000;
+		*/
 	end	
 
+ 	// DACK output
 	always_comb begin
 		if(pencoderOut == 4'b0001)      begin VALID_DACK0 = 1'b1; VALID_DACK1 = 1'b0; VALID_DACK2 = 1'b0; VALID_DACK3 = 1'b0; end
 		else if(pencoderOut == 4'b0010) begin VALID_DACK1 = 1'b1; VALID_DACK2 = 1'b0; VALID_DACK3 = 1'b0; VALID_DACK0 = 1'b0; end
@@ -196,6 +198,7 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 
 	
 	// Rotating priority logic 
+	// reset value
 	always_ff@(posedge dif.CLK) begin
 		if(dif.RESET) begin
 			{CH0_PRIORITY, CH1_PRIORITY, CH2_PRIORITY, CH3_PRIORITY} <= {8'b11100100};  // by default CH0 - highest and CH3 - lowest priority
@@ -205,7 +208,14 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 	end
 
 	always_ff@(posedge dif.CLK) begin
-		if(cif.VALID_DREQ0) //begin NEXT_CH0_PRIORITY <= 2'b00; NEXT_CH1_PRIORITY <= CH1_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
+		if(enFixedPriority) begin
+			CH0_PRIORITY <= 2'b11;
+			CH1_PRIORITY <= 2'b10;
+			CH2_PRIORITY <= 2'b01;
+			CH3_PRIORITY <= 2'b00;
+		end
+		else if(enRotatingPriority)
+		if(pencoderOut == 4'b0001) //begin NEXT_CH0_PRIORITY <= 2'b00; NEXT_CH1_PRIORITY <= CH1_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
 			begin 
 				NEXT_CH0_PRIORITY <= 2'b00;
 				if(CH1_PRIORITY != 2'b11)	NEXT_CH1_PRIORITY <= CH1_PRIORITY + 1'b1;
@@ -216,10 +226,10 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 				else				NEXT_CH3_PRIORITY <= CH3_PRIORITY - 1'b1;
 				
 			end
-		else if(cif.VALID_DREQ1)//begin NEXT_CH1_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
+		else if(pencoderOut == 4'b0010)//begin NEXT_CH1_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
 			begin 
 				NEXT_CH1_PRIORITY <= 2'b00;
-				if(CH0_PRIORITY != 2'b11)	NEXT_C0_PRIORITY  <= CH0_PRIORITY + 1'b1;
+				if(CH0_PRIORITY != 2'b11)	NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1;
 				else				NEXT_CH0_PRIORITY <= CH0_PRIORITY - 1'b1;
 				if(CH2_PRIORITY != 2'b11)	NEXT_CH2_PRIORITY <= CH2_PRIORITY + 1'b1;
 				else				NEXT_CH2_PRIORITY <= CH2_PRIORITY - 1'b1;
@@ -227,7 +237,7 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 				else				NEXT_CH3_PRIORITY <= CH3_PRIORITY - 1'b1;
 				
 			end
-		else if(cif.VALID_DREQ2)//begin NEXT_CH2_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
+		else if(pencoderOut == 4'b0100)//begin NEXT_CH2_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
 			begin 
 				NEXT_CH2_PRIORITY <= 2'b00;
 				if(CH0_PRIORITY != 2'b11)	NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1;
@@ -238,7 +248,7 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 				else				NEXT_CH3_PRIORITY <= CH3_PRIORITY - 1'b1;
 				
 			end
-		else if(cif.VALID_DREQ3)//begin NEXT_CH3_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
+		else if(pencoderOut == 4'b1000)//begin NEXT_CH3_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
 			begin 
 				NEXT_CH3_PRIORITY <= 2'b00;
 				if(CH0_PRIORITY != 2'b11)	NEXT_CH0_PRIORITY  <= CH0_PRIORITY + 1'b1;
