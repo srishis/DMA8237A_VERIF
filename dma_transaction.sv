@@ -59,7 +59,7 @@ import dma_reg_pkg::*;
     tx.iow_out = this.iow_out;
     tx.memr_out = this.memr_out;
     tx.memw_out = this.memw_out;
-    tx.eop = this.eop
+    tx.eop = this.eop;
     tx.hlda = this.hlda;
     tx.cs = this.cs;
     tx.addr_up_out = this.addr_up_out;
