@@ -2,7 +2,7 @@
 //TODO: update properties in all methods
 
 // transaction types
-typedef enum {BASE_REG_CFG, REG_WRITE_CFG, REG_READ_CFG, DMA_WRITE, DMA_READ} tx_type_t;
+typedef enum {REQ_TX, BASE_REG_READ_CFG, BASE_REG_CFG, REG_WRITE_CFG, REG_READ_CFG, DMA_WRITE, DMA_READ} tx_type_t;
 // DMA cycles
 typedef enum {IDLE, ACTIVE} dma_cycles_t;
 
@@ -13,13 +13,15 @@ import dma_reg_pkg::*;
 
   tx_type_t 	tx_type; 
   dma_cycles_t	cycle; 
+
+  // TODO it seems like these should be two separate transactions
+  // (inputs vs outputs. Leave alone for now)
+
   // Properties
   // declare all inputs and controls signals as rand to generate random values from them
   rand bit [3:0] dreq;
   rand bit [7:0] data_in;
   rand bit ior_in;
-  rand bit memr_in;
-  rand bit memw_in;
   rand bit iow_in;
   rand bit hlda;
   rand bit cs;
@@ -61,7 +63,7 @@ import dma_reg_pkg::*;
     tx.iow_out = this.iow_out;
     tx.memr_out = this.memr_out;
     tx.memw_out = this.memw_out;
-    tx.eop = this.eop
+    tx.eop = this.eop;
     tx.hlda = this.hlda;
     tx.cs = this.cs;
     tx.addr_up_out = this.addr_up_out;

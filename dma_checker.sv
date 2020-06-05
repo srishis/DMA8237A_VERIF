@@ -5,7 +5,6 @@ class dma_checker;
 	bit [7:0] exp_data, actual_data;
 	string reg_name;
 	dma_transaction tx;
-	tx_type_t tx_type;
 	
 	// checking methods
 	task run();
