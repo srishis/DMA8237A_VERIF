@@ -219,7 +219,7 @@ module dma_priority(dma_if.PR dif, DmaControlIf.PR cif, DmaRegIf.PR rif);
 		else if(cif.VALID_DREQ1)//begin NEXT_CH1_PRIORITY <= 2'b00; NEXT_CH0_PRIORITY <= CH0_PRIORITY + 1'b1; NEXT_CH2_PRIORITY <=  CH2_PRIORITY + 1'b1; NEXT_CH3_PRIORITY <=  CH3_PRIORITY + 1'b1; end//
 			begin 
 				NEXT_CH1_PRIORITY <= 2'b00;
-				if(CH0_PRIORITY != 2'b11)	NEXT_C0_PRIORITY  <= CH0_PRIORITY + 1'b1;
+				if(CH0_PRIORITY != 2'b11)	NEXT_CH0_PRIORITY  <= CH0_PRIORITY + 1'b1;
 				else				NEXT_CH0_PRIORITY <= CH0_PRIORITY - 1'b1;
 				if(CH2_PRIORITY != 2'b11)	NEXT_CH2_PRIORITY <= CH2_PRIORITY + 1'b1;
 				else				NEXT_CH2_PRIORITY <= CH2_PRIORITY - 1'b1;
