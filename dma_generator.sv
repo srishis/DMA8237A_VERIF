@@ -127,7 +127,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(0, 16'h00ab, 1); //channel =0, transfer address = 16'h00ab, polarity = active high
 			//Write control registers
-			cfg_control_registers(0,0,1); //channel = 0, priority = fixed, dack,dreq = active high
+			cfg_control_registers(0,0,1,0); //channel = 0, priority = fixed, dack,dreq = active high, mem read
 			
 		endtask : dma_io_to_mem_read_transfer
 	
@@ -141,11 +141,34 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(1, 16'h00ac, 1); //channel =1, transfer address = 16'h00ac, polarity = active high
 			//Write control registers	
-			cfg_control_registers(1,0,1); //channel = 1, priority = fixed, dack,dreq = active high
+			cfg_control_registers(1,0,1,1); //channel = 1, priority = fixed, dack,dreq = active high, mem write
 			
 		endtask : dma_io_to_mem_write_transfer
 	
-	
+	//dma_io_to_mem_write_read_transfer
+		task dma_io_to_mem_write_read_transfer; //channel 1
+			tx = new();
+			tx.tx_type = REQ_TX;
+			tx.dreq = 4'h2;
+			dma_config::gen2drv.put(tx);
+			
+			//Write base address and count registers
+			cfg_base_registers(1, 16'h00ac, 1); //channel =1, transfer address = 16'h00ac, polarity = active high
+			//Write control registers	
+			cfg_control_registers(1,0,1,1); //channel = 1, priority = fixed, dack,dreq = active high, mem write
+			
+			tx = new();
+			tx.tx_type = REQ_TX;
+			tx.dreq = 4'h1;
+			dma_config::gen2drv.put(tx);
+			
+			//Write base address and count registers
+			cfg_base_registers(0, 16'h00ac, 1); //channel =0, transfer address = 16'h00ab, polarity = active high
+			//Write control registers
+			cfg_control_registers(0,0,1,0); //channel = 0, priority = fixed, dack,dreq = active high, mem read
+			
+		endtask : dma_io_to_mem_write_read_transfer
+		
 	//dma_eop_directed_test
 		task dma_eop_directed_test; //channel 2
 			tx = new();
@@ -156,7 +179,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(2, 16'h00ac, 1); //channel =2, transfer address = 16'h00ac, polarity = active high
 			//Write control registers
-			cfg_control_registers(2,0,1); //channel = 2, priority = fixed, dack,dreq = active high
+			cfg_control_registers(2,0,1,0); //channel = 2, priority = fixed, dack,dreq = active high, mem read
 			
 		endtask : dma_eop_directed_test
 		
@@ -170,7 +193,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(2, 16'h00ac, 1); //channel =2, transfer address = 16'h00ac, polarity = active high
 			//Write control registers
-			cfg_control_registers(2,0,1); //channel = 2, priority = fixed, dack,dreq = active high
+			cfg_control_registers(2,0,1,1); //channel = 2, priority = fixed, dack,dreq = active high, mem write
 			
 			reg_read(STATUS_REG_ADDR,Status);
 			$display("Status Resgister Output = %b",Status);
@@ -187,7 +210,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(3, 16'h00ad, 0); //channel =3, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(3,0,0);//channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(3,0,0,1);//channel = 0, priority = fixed, dack,dreq = active low, mem write
 			
 			
 			tx = new();
@@ -198,7 +221,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(3, 16'h00ad, 1); //channel =3, transfer address = 16'h00ad, polarity = active high
 			//Write control registers
-			cfg_control_registers(3,0,1);//channel = 0, priority = fixed, dack,dreq = active high
+			cfg_control_registers(3,0,1,1);//channel = 0, priority = fixed, dack,dreq = active high, mem write
 	
 	endtask : dma_polarity_test
 	
@@ -213,7 +236,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(0, 16'h00ad, 0); //channel =0, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(0,0,0); //channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(0,0,0,1); //channel = 0, priority = fixed, dack,dreq = active low, mem write
 			
 			tx = new();
 			tx.dreq = 4'hf; //dreq = 1111 means  priority channel should be serviced is 0 and dack should be on dack0
@@ -223,7 +246,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(0, 16'h00ad, 1); //channel =0, transfer address = 16'h00ad, polarity = active high
 			//Write control registers
-			cfg_control_registers(0,0,1); //channel = 0, priority = fixed, dack,dreq = active high
+			cfg_control_registers(0,0,1,0); //channel = 0, priority = fixed, dack,dreq = active high, mem read
 				
 	endtask : dma_fixed_priority_test
 	
@@ -237,7 +260,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(0, 16'h00ad, 0); //channel =0, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(0,0,0); //channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(0,0,0,1); //channel = 0, priority = fixed, dack,dreq = active low, mem write
 			
 	endtask : dma_fixed_priority_ch0_test
 	
@@ -251,7 +274,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(1, 16'h00ad, 0); //channel =1, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(1,0,0); //channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(1,0,0,1); //channel = 0, priority = fixed, dack,dreq = active low, mem write
 			
 	endtask : dma_fixed_priority_ch1_test
 	
@@ -265,7 +288,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(2, 16'h00ad, 0); //channel =2, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(2,0,0); //channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(2,0,0,0); //channel = 0, priority = fixed, dack,dreq = active low, mem read
 			
 	endtask : dma_fixed_priority_ch2_test
 	
@@ -279,7 +302,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(3, 16'h00ad, 0); //channel =3, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(3,0,0); //channel = 0, priority = fixed, dack,dreq = active low
+			cfg_control_registers(3,0,0,0); //channel = 0, priority = fixed, dack,dreq = active low, mem read
 			
 	endtask : dma_fixed_priority_ch3_test
 	
@@ -293,7 +316,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(2, 16'h00ad, 0); //channel =2, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(2,1,0); //channel = 2, priority = rotating, dack,dreq = active low
+			cfg_control_registers(2,1,0,1); //channel = 2, priority = rotating, dack,dreq = active low, mem write
 		
 			tx = new();
 			tx.dreq = 4'h9;//dreq = 1001 means channel 1 should be services and dack should be on dack1
@@ -303,7 +326,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(1, 16'h00ad, 0); //channel =1, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(1,1,0); //channel = 1, priority = rotating, dack,dreq = active low
+			cfg_control_registers(1,1,0,1); //channel = 1, priority = rotating, dack,dreq = active low, mem write
 			
 			tx = new();
 			tx.dreq = 4'h1; //dreq = 0001 means channel 3 should be services and dack should be on dack3
@@ -313,7 +336,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(3, 16'h00ad, 0); //channel =3, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(3,1,0); //channel = 1, priority = rotating, dack,dreq = active low
+			cfg_control_registers(3,1,0,0); //channel = 1, priority = rotating, dack,dreq = active low, mem read
 			
 			tx = new();
 			tx.dreq = 4'h0; //dreq = 0000 means channel 0 should be services and dack should be on dack0
@@ -323,7 +346,7 @@ class dma_generator;
 			//Write base address and count registers
 			cfg_base_registers(0, 16'h00ad, 0); //channel =0, transfer address = 16'h00ad, polarity = active low
 			//Write control registers
-			cfg_control_registers(0,1,0); //channel = 1, priority = rotating, dack,dreq = active low
+			cfg_control_registers(0,1,0,0); //channel = 1, priority = rotating, dack,dreq = active low, mem read
 			
 	endtask : dma_rotational_priority_test
 	
@@ -373,7 +396,7 @@ class dma_generator;
 	
 	
 	//Write Configure Control Registers
-	task cfg_control_registers(int channel,bit rf_priority,bit polarity);//rf_priority = 1 rotating rf_priority = 0 fixed 
+	task cfg_control_registers(int channel,bit rf_priority,bit polarity, bit mem_read_write);//rf_priority = 1 rotating rf_priority = 0 fixed 
 	if(rf_priority)//rotating
 		if(polarity)
 			reg_write(COMMAND_REG_ADDR,16'h00b0 );
@@ -389,24 +412,36 @@ class dma_generator;
 			
 		
 	if(channel == 0) begin
-			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			if(mem_read_write)//write
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = write, channel = 0)
 			reg_write(MODE_REG_ADDR,16'h0054,0);
+			else //read
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			reg_write(MODE_REG_ADDR,16'h0058,0);
 			//request res(set/reset(1/0) =set,channel= 0)
 			reg_write(REQUEST_REG_ADDR,16'h0004,0);
 			//mask register
 			reg_write(MASK_REG_ADDR,16'h0001,0);	
 	end
 	else if(channel == 1)begin
-			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			if(mem_read_write)//write
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = write, channel = 1)
 			reg_write(MODE_REG_ADDR,16'h0055,0);
+			else //read
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 1)
+			reg_write(MODE_REG_ADDR,16'h0059,0);
 			//request res(set/reset(1/0) =set,channel= 1)
 			reg_write(REQUEST_REG_ADDR,16'h0005,0);
 			//mask register 
 			reg_write(MASK_REG_ADDR,16'h0002,0);	
 	end
 	else if(channel == 2)begin
-			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			if(mem_read_write)//write
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = write, channel = 2)
 			reg_write(MODE_REG_ADDR,16'h0056,0);
+			else //read
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 2)
+			reg_write(MODE_REG_ADDR,16'h005a,0);
 			//request res(set/reset(1/0) =set,channel= 2)
 			reg_write(REQUEST_REG_ADDR,16'h0006,0);
 			//mask register 
@@ -414,8 +449,12 @@ class dma_generator;
 		
 	end
 	else if(channel == 3)begin
-			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 0)
+			if(mem_read_write)//write
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = write, channel = 3)
 			reg_write(MODE_REG_ADDR,16'h0057,0);
+			else //read
+			//mode register (mode=single mode, addr = incr, auto_in = en, transfer type = read, channel = 3)
+			reg_write(MODE_REG_ADDR,16'h005b,0);
 			//request res(set/reset(1/0) =set,channel= 3)
 			reg_write(REQUEST_REG_ADDR,16'h0007,0);
 			//mask register 
