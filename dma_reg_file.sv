@@ -9,51 +9,50 @@ import dma_reg_pkg::*;
             if(dif.RESET || dif.MASTER_CLEAR_CMD) READ_BUF    <= '0;
      	    // Read CH0 current address register
      	    else if(dif.READ_CURR_ADDR_CH0_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)     		// load upper byte 
      	        READ_BUF <= CURR_ADDR_CH0_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_ADDR_CH0_REG[7:0];
      	    // Read CH1 current address register
      	    else if(dif.READ_CURR_ADDR_CH1_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)     		// load upper byte 
      	        READ_BUF <= CURR_ADDR_CH1_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_ADDR_CH1_REG[7:0];
      	    // Read CH2 current address register
      	    else if(dif.READ_CURR_ADDR_CH2_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
      	        READ_BUF <= CURR_ADDR_CH2_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1)	// load lower byte
      	        READ_BUF <= CURR_ADDR_CH2_REG[7:0];
      	    // Read CH3 current address register
      	    else if(dif.READ_CURR_ADDR_CH3_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)     		// load upper byte 
      	        READ_BUF <= CURR_ADDR_CH3_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_ADDR_CH3_REG[7:0];
      	    // Read CH0 current word count register
      	    else if(dif.READ_CURR_WORD_COUNT_CH0_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
      	        READ_BUF <= CURR_WORD_COUNT_CH0_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_WORD_COUNT_CH0_REG[7:0];
      	    // Read CH1 current word count register
      	    else if(dif.READ_CURR_WORD_COUNT_CH1_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
      	        READ_BUF <= CURR_WORD_COUNT_CH1_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_WORD_COUNT_CH1_REG[7:0];
      	    // Read CH2 current word count register
-     	    else if(dif.READ_CURR_WORD_COUNT_CH2_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	   else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load upper byte 
      	        READ_BUF <= CURR_WORD_COUNT_CH2_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_WORD_COUNT_CH2_REG[7:0];
      	    // Read CH3 current word count register
      	    else if(dif.READ_CURR_WORD_COUNT_CH3_REG_CMD == 1)
-     	      if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     	      if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
      	        READ_BUF <= CURR_WORD_COUNT_CH3_REG[15:8];
-     	      else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+     	      else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
      	        READ_BUF <= CURR_WORD_COUNT_CH3_REG[7:0];
   end	// end of Read BUffer
   
@@ -78,28 +77,28 @@ import dma_reg_pkg::*;
                BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_ADDR_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base address register -> base Address Reg 1     
      else if(dif.WRITE_BASE_ADDR_CH1_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_ADDR_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base address register -> base Address Reg 2     
      else if(dif.WRITE_BASE_ADDR_CH2_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_ADDR_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base address register -> base Address Reg 3     
      else if(dif.WRITE_BASE_ADDR_CH3_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_ADDR_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_ADDR_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      else begin
           BASE_ADDR_CH0_REG <= BASE_ADDR_CH0_REG;
           BASE_ADDR_CH1_REG <= BASE_ADDR_CH1_REG;
@@ -118,35 +117,35 @@ import dma_reg_pkg::*;
       end
     // CH0 current address register
      else if(dif.WRITE_BASE_ADDR_CH0_REG_CMD == 1 && MODE_REG[0].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
          CURR_ADDR_CH0_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_ADDR_CH0_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_ADDR_CH0_REG <= BASE_ADDR_CH0_REG;
     // CH1 current address register
      else if(dif.WRITE_BASE_ADDR_CH0_REG_CMD == 1 && MODE_REG[1].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
          CURR_ADDR_CH1_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_ADDR_CH1_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_ADDR_CH1_REG <= BASE_ADDR_CH1_REG;
     // CH2 current address register
      else if(dif.WRITE_BASE_ADDR_CH2_REG_CMD == 1 && MODE_REG[2].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)   		// load upper byte 
          CURR_ADDR_CH2_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_ADDR_CH2_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_ADDR_CH2_REG <= BASE_ADDR_CH2_REG;
     // CH3 current address register
      else if(dif.WRITE_BASE_ADDR_CH3_REG_CMD == 1 && MODE_REG[3].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)   		// load upper byte 
          CURR_ADDR_CH3_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_ADDR_CH3_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_ADDR_CH3_REG <= BASE_ADDR_CH3_REG;
      else begin
            CURR_ADDR_CH0_REG <= CURR_ADDR_CH0_REG;
@@ -154,9 +153,10 @@ import dma_reg_pkg::*;
            CURR_ADDR_CH2_REG <= CURR_ADDR_CH2_REG;
            CURR_ADDR_CH3_REG <= CURR_ADDR_CH3_REG;
       end
+   end
 
 // Base word count Registers
-   always_ff@(posedge dif.CLK) begin
+   always_ff @(posedge dif.CLK) begin
      if(dif.RESET || dif.MASTER_CLEAR_CMD)  begin                
            BASE_WORD_COUNT_CH0_REG <= '0;
            BASE_WORD_COUNT_CH1_REG <= '0;
@@ -169,28 +169,28 @@ import dma_reg_pkg::*;
                BASE_WORD_COUNT_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_WORD_COUNT_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base word count register -> base word count Reg 1     
      else if(dif.WRITE_BASE_WORD_COUNT_CH1_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_WORD_COUNT_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_WORD_COUNT_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base address register -> base word count Reg 2     
      else if(dif.WRITE_BASE_WORD_COUNT_CH2_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_WORD_COUNT_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_WORD_COUNT_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      //the command code for Writing the base word count register -> base word count Reg 3     
      else if(dif.WRITE_BASE_WORD_COUNT_CH3_REG_CMD == 1)
              if(SET_BYTE_POINTER_CMD == 1)	  // load upper byte 
                BASE_WORD_COUNT_CH0_REG[15:8] <= WRITE_BUF;
              else if(CLEAR_BYTE_POINTER_CMD == 1) // load lower byte
                BASE_WORD_COUNT_CH0_REG[7:0]  <= WRITE_BUF;
-             end
+             
      else begin
           BASE_WORD_COUNT_CH0_REG <= BASE_WORD_COUNT_CH0_REG;
           BASE_WORD_COUNT_CH1_REG <= BASE_WORD_COUNT_CH1_REG;
@@ -211,35 +211,34 @@ import dma_reg_pkg::*;
       end
     // CH0 current word count register
      else if(dif.WRITE_BASE_WORD_COUNT_CH0_REG_CMD == 1 && MODE_REG[0].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)     		// load upper byte 
          CURR_WORD_COUNT_CH0_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_WORD_COUNT_CH0_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_WORD_COUNT_CH0_REG <= BASE_WORD_COUNT_CH0_REG;
     // CH1 current word count register
      else if(dif.WRITE_BASE_WORD_COUNT_CH0_REG_CMD == 1 && MODE_REG[1].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
          CURR_WORD_COUNT_CH1_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_WORD_COUNT_CH1_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_WORD_COUNT_CH1_REG <= BASE_WORD_COUNT_CH1_REG;
     // CH2 current word count register
      else if(dif.WRITE_BASE_WORD_COUNT_CH2_REG_CMD == 1 && MODE_REG[2].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+       if(SET_BYTE_POINTER_CMD == 1)    		// load upper byte 
          CURR_WORD_COUNT_CH2_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_WORD_COUNT_CH2_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_WORD_COUNT_CH2_REG <= BASE_WORD_COUNT_CH2_REG;
     // CH3 current word count register
-     else if(dif.WRITE_BASE_WORD_COUNT_CH3_REG_CMD == 1 && MODE_REG[3].auto_init_en == 0)
-       if(SET_BYTE_POINTER_CMD == 1) begin    		// load upper byte 
+     else if(dif.WRITE_BASE_WORD_COUN    		// load upper byte 
          CURR_WORD_COUNT_CH3_REG[15:8] <= WRITE_BUF;
-       else if(CLEAR_BYTE_POINTER_CMD == 1) begin	// load lower byte
+       else if(CLEAR_BYTE_POINTER_CMD == 1) 	// load lower byte
          CURR_WORD_COUNT_CH3_REG[7:0]  <= WRITE_BUF;
-     else if(!dif.EOP_N)begin	// auto initialization is enabled and EOP is asserted
+     else if(!dif.EOP_N)	// auto initialization is enabled and EOP is asserted
          CURR_WORD_COUNT_CH3_REG <= BASE_WORD_COUNT_CH3_REG;
      else begin
            CURR_WORD_COUNT_CH0_REG <= CURR_WORD_COUNT_CH0_REG;
@@ -247,6 +246,7 @@ import dma_reg_pkg::*;
            CURR_WORD_COUNT_CH2_REG <= CURR_WORD_COUNT_CH2_REG;
            CURR_WORD_COUNT_CH3_REG <= CURR_WORD_COUNT_CH3_REG;
       end
+   end 
   
   // Mode Register
   always_ff@(posedge dif.CLK) begin
@@ -348,6 +348,7 @@ import dma_reg_pkg::*;
 		 IO_DATA_BUF 		   <= CURR_ADDR_CH3_REG[15:8];
 	 	{OUT_ADDR_BUF,IO_ADDR_BUF} <= CURR_ADDR_CH3_REG[7:0];
 	end
+ end 
 
 // Address Buffers
   always_ff@(posedge dif.CLK) begin
