@@ -28,9 +28,9 @@ class dma_monitor;
 			if(!tx.iow_in)
 				if(tx.addr_lo_in inside {[0:7]}) begin	// base registers address range is from 4'h0-4'h7
 				tx.tx_type	= BASE_REG_CFG;
-				tx.data_in[7:0]   = vif.dma_cb.DB;
+				vif.dma_cb.DB = tx.data_in[7:0];
 				@(vif.dma_cb);
-				tx.data_in[15:8]   = vif.dma_cb.DB;
+				vif.dma_cb.DB = tx.data_in[15:8];
 				end
 				else begin
 				tx.tx_type	= REG_WRITE_CFG;
@@ -59,7 +59,7 @@ class dma_monitor;
 				tx.is_addr_valid = 1;
 				// get the valid address
 				tx.data_out[15:8]    	= vif.dma_cb.DB;
-				tx.addr_lo_out[7:4]     = vif.dma_cb.ADDR_U;
+				tx.addr_lo_out[3:0]     = vif.dma_cb.ADDR_U;
 				tx.addr_up_out[3:0]  	= vif.dma_cb.ADDR_L;
 				// check if it is read or write transfer
 				tx.ior_out 	= vif.dma_cb.IOR_N;

@@ -5,12 +5,11 @@ class dma_config;
   static mailbox gen2drv;
   static mailbox drv2gen;
   static mailbox gen2chk;
-  static mailbox drv2gen; // is this needed?
   static mailbox gen2ref; // shouldn't there be drv2ref ???, not this???
   static mailbox mon2cov;
   //static mailbox mon2sb // TODO delete this line;
   static mailbox gen2sb;
-  static mailbox mon2ck;
+  static mailbox mon2chk;
   static mailbox sb2ck;
   //static mailbox ref2sb; // TODO delete this line
   
