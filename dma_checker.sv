@@ -6,13 +6,13 @@ class dma_checker;
 	bit flag;
 	string reg_name;
 	dma_transaction exp_tx, tx;
-	dma_transaction exp_txQ[$], act_txQ[$};
+	// dma_transaction exp_txQ[$], act_txQ[$};
 	// checking methods
 	task run();
 	$display("[CHECKER]: Inside DMA checker run task!");
 		forever begin
 		mon2chk.get(tx);
-		exp_txQ.push_back(tx);
+		// exp_txQ.push_back(tx);
 		// checker logic
 		// register read response
 		if(tx.cycle == IDLE)
@@ -24,7 +24,7 @@ class dma_checker;
 			flag = 1;
 		if(flag)
 			get_register_name();
-			if(exp_data != actual_data])
+			if(exp_data != actual_data)
 			$display("[CHECKER]: Register Read failed for register %s with Expected data = %0h and Actual data = %0h", reg_name, exp_data, actual_data);
 		end
 		
