@@ -300,5 +300,15 @@ single request bit, single mask bit commands are not supported
   	else	dif.READ_MASK_REG_CMD = 1'b0;
   else	dif.READ_MASK_REG_CMD = 1'bx;
   end
-
+  
+  // READ ANY REGISTER
+  always_comb begin
+  if(!dif.CS_N && !dif.HLDA)
+  	// read to register
+  	if(dif.IOW_N && !dif.IOR_N)
+  		    dif.READ_ANY_REG_CMD = 1'b1;
+  	else	dif.READ_ANY_REG_CMD = 1'b0;
+  else	  dif.READ_ANY_REG_CMD = 1'bx;
+  end
+  
 endmodule : dma_sw_commands
