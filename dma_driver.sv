@@ -9,7 +9,7 @@ class dma_driver;
 	virtual dma_if.DRIVER vif;
 	
 	task run();
-		$display("DMA_DRIVER:: Entered in DRIVER run method!");
+		$display("[DRIVER]: Inside DMA DRIVER run method!");
 		// get the virtual interface handle
 		vif = dma_config::vif;
 		//wait for DUT to come out of reset
