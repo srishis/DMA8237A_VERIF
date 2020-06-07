@@ -26,6 +26,8 @@ interface dma_if(input logic CLK, input logic RESET);
 	wire 	    EOP_N;		// bi-directional signal to end DMA active transfers
 	
 	// DMA SW Commands in Program mode
+	logic READ_ANY_REG_CMD;
+	
 	logic WRITE_BASE_ADDR_CH0_REG_CMD;
 	logic WRITE_BASE_ADDR_CH1_REG_CMD;
 	logic WRITE_BASE_ADDR_CH2_REG_CMD;
