@@ -45,13 +45,13 @@ class dma_coverage;
 					bins iow_out_high = {1};
 					}		
 
-		MEMR_OUT_CP:coverpoint tx.iow_out{
+		MEMR_OUT_CP:coverpoint tx.memr_out{
 					option.at_least = 5;
 					bins memr_out_low  = {0};
 					bins memr_out_high = {1};
 					}
 					
-		MEMW_OUT_CP:coverpoint tx.iow_out{
+		MEMW_OUT_CP:coverpoint tx.memw_out{
 					option.at_least = 5;
 					bins memw_out_low  = {0};
 					bins memw_out_high = {1};
