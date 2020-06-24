@@ -2,15 +2,15 @@
 
 class dma_config;
   // create all mailboxes required in the environment 
-  static mailbox gen2drv;
-  static mailbox drv2gen;
-  static mailbox gen2chk;
-  static mailbox gen2ref; // shouldn't there be drv2ref ???, not this???
-  static mailbox mon2cov;
+  static mailbox gen2drv = new();
+  static mailbox drv2gen = new();
+  static mailbox gen2chk = new();
+  static mailbox gen2ref = new(); // shouldn't there be drv2ref ???, not this???
+  static mailbox mon2cov = new();
   //static mailbox mon2sb // TODO delete this line;
-  static mailbox gen2sb;
-  static mailbox mon2chk;
-  static mailbox sb2ck;
+  static mailbox gen2sb = new();
+  static mailbox mon2chk = new();
+  static mailbox sb2ck = new();
   //static mailbox ref2sb; // TODO delete this line
   
   // create virtual interface handle to pass to all classes from test bench top
